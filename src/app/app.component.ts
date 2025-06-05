@@ -17,12 +17,12 @@ export class AppComponent implements OnInit{
     authService = inject(AuthService);
     
 
-  ngOnInit(): void {
-    console.log('authService user :: '+ this.authService.user());
-  }
+    ngOnInit(): void {
+      console.log('authService user valeur :: '+ this.authService.user());
+    }
 
     logout() {
-      this.authService.logoutUserGoogle();
+      this.authService.logout();
     }
 
     // logout() {

@@ -6,16 +6,16 @@ import { inject } from '@angular/core';
 export const isLoggedInGuard: CanActivateFn = (route, state) => {
     const authService = inject(AuthService);
     const router = inject(Router);
-
-    if (authService.user() == undefined || authService.getUserGoogle() == undefined) {
+    
+    if (authService.user() == undefined) {
       return authService.getUser().pipe(
         map(_ => true),
         catchError(_ => router.navigate(['login']))
       )
     }
-    console.log('isLoggedInGuard ::: ' + authService.user())
-    if (!authService.user() || !authService.getUserGoogle()) {
-        router.navigate(['login']);
+    console.log('authService user :: '+ !authService.user());
+    if (!authService.user()) {
+      router.navigate(['login']);
     }
 
     return true;

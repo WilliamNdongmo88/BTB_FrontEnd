@@ -4,11 +4,6 @@
  		<p>Welcome {{authService.user()?.name}}</p>
  		<button mat-flat-button color="warn" (click)="logout()">Logout</button>
  	</mat-toolbar>
- }@else if (authService.getUserGoogle()) {
-	<mat-toolbar>
- 		<button mat-icon-button (click)="navigateHome()"><mat-icon>home</mat-icon></button>
- 		<p>Welcome {{authService.getUserGoogle()?.nom}}</p>
- 		<button mat-flat-button color="warn" (click)="logout()">Logout</button>
- 	</mat-toolbar>
  }
 <router-outlet />
+

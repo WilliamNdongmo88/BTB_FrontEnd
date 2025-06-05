@@ -62,37 +62,4 @@ export class ConnexionComponent{
       this.loginSubscripton?.unsubscribe();
     }
 
-    // onSubmit() {
-    //   this.submitted = true;
-    //   this.error = '';
-
-    //   if (this.loginForm.invalid) return;
-
-    //   const credentials = this.loginForm.value;
-    //   this.authService.login(credentials).subscribe({
-    //     next: (res) => {
-    //       console.log('res.Bearer:: '+ res['Bearer'])
-    //       localStorage.setItem('token', res.Bearer);
-    //       this.router.navigate(['/home']);
-    //     },
-    //     error: (err) => {
-    //       this.error = 'Erreur de connexion : ' + (err.error?.message || 'Veuillez réessayer');
-    //     }
-    //     });
-    //   }
-
-// onSubmit() {
-//     const credentials = this.loginForm.value;
-//     this.authService.login(credentials).subscribe({
-//         next: (res) => {
-//         const token = res.headers.get('Authorization')?.replace('Bearer ', '');
-//         if (token) {
-//             this.authService.saveToken(token);
-//             this.router.navigate(['/products']);
-//         }
-//         },
-//         error: () => this.error = 'Identifiants incorrects'
-//     });
-// }
-
 }
