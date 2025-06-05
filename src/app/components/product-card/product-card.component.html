@@ -1,0 +1,17 @@
+<div class="product-card">
+    <figure class="art">
+        <img [src]="product.imageUrl" alt="Image product" class="product-image" />
+    </figure>
+    <div class="capacity">
+        <div class="main">
+            <div class="name_price">
+                <h5 class="name">{{ product.name }}</h5>
+                <p class="price">{{ product.price }} €</p>
+            </div>
+            <!-- Autres éléments a placer a droite -->
+        </div>
+        <div class="description">
+            {{product.description}}
+        </div>
+    </div>
+</div>

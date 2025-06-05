@@ -1,0 +1,19 @@
+@if (product){
+  <div class="container mt-5">
+    <h2 class="mb-3">{{ product.name }}</h2>
+    @if (product.imageUrl){
+      <img [src]="product.imageUrl" class="img-fluid mb-3" alt="{{ product.name }}">
+    }
+    <div>
+      <p><strong>Description :</strong> {{ product.description }}</p>
+      <p><strong>Prix :</strong> {{ product.price | currency:'EUR' }}</p>
+      <button class="btn btn-secondary mt-3" (click)="goBack()">Retour</button>
+    </div>
+  </div>
+}
+@if (!product) {
+  <div >
+    <p>Chargement du produit...</p>
+  </div>
+}
+
