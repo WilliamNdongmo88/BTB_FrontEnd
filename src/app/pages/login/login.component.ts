@@ -51,8 +51,6 @@
 // }
 
 
-
-// src/app/google-auth/google-auth.component.ts
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -61,57 +59,32 @@ import { AuthService } from '../../services/auth.service';
 declare const google: any;
 
 @Component({
-  selector: 'app-google-auth',
-  templateUrl: './login.component.html',
+  selector: 'app-login',
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
+    // Initialisation du SDK Google Identity
     google.accounts.id.initialize({
       client_id: '661537133165-bak5ui2p3k1h5gadof82o5055ct1m1tg.apps.googleusercontent.com',
       callback: (response: any) => this.handleCredentialResponse(response)
     });
 
+    // Rendu du bouton
     google.accounts.id.renderButton(
       document.getElementById('googleSignInDiv'),
-      { theme: 'filled_blue', size: 'large' }
+      { theme: 'outline', size: 'large' }
     );
-
-    //google.accounts.id.prompt(); // Affiche automatiquement la boîte de dialogue
   }
 
   handleCredentialResponse(response: any) {
     const googleIdToken = response.credential;
 
-    this.http.post<{ token: string }>('http://localhost:8050/api/auth/google', {
-      idToken: googleIdToken
-    }).subscribe({
-      next: (res) => {
-        console.log('Token JWT local reçu :', res.token);
-        localStorage.setItem('jwt', res.token);
-
-        this.router.navigate(['/home']).then(
-          success => {
-            console.log('Navigation réussie ?', success);
-            if (!success) {
-              console.error('Échec de la navigation vers /home');
-            }
-          },
-          error => {
-            console.error('Erreur lors de la navigation :', error);
-          }
-        );
-        
-      },
-      error: (err) => {
-        console.error('Erreur lors de l\'authentification avec le backend :', err);
-      }
-    });
-    console.log('Token envoyé au backend :', googleIdToken);
+    this.authService.loginWithGoogle(googleIdToken);
   }
-
-
 }
+
 

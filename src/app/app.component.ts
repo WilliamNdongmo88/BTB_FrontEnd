@@ -17,20 +17,13 @@ export class AppComponent implements OnInit{
     authService = inject(AuthService);
     
 
-  ngOnInit(): void {
-    console.log('authService user :: '+ this.authService.user());
-  }
-
-    logout() {
-      this.authService.logoutUserGoogle();
+    ngOnInit(): void {
+      console.log('[app.component] isLoggedIn :: ', this.authService.isLoggedIn());
     }
 
-    // logout() {
-    //   this.authService.logout().subscribe({
-    //     next: _ => { this.navigateToLogin(); },
-    //     error: _ => { this.navigateToLogin(); }
-    //   })
-    // }
+    logout() {
+      this.authService.logout();
+    }
 
     navigateToLogin() {
       this.router.navigate(['login']);

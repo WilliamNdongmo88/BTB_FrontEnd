@@ -1,13 +1,7 @@
-@if(authService.user()) {
- 	<mat-toolbar>
- 		<button mat-icon-button (click)="navigateHome()"><mat-icon>home</mat-icon></button>
- 		<p>Welcome {{authService.user()?.name}}</p>
- 		<button mat-flat-button color="warn" (click)="logout()">Logout</button>
- 	</mat-toolbar>
- }@else if (authService.getUserGoogle()) {
+@if (authService.isLoggedIn()) {
 	<mat-toolbar>
  		<button mat-icon-button (click)="navigateHome()"><mat-icon>home</mat-icon></button>
- 		<p>Welcome {{authService.getUserGoogle()?.nom}}</p>
+ 		<p>Welcome {{authService.getUserGoogle()?.name}}</p>
  		<button mat-flat-button color="warn" (click)="logout()">Logout</button>
  	</mat-toolbar>
  }
