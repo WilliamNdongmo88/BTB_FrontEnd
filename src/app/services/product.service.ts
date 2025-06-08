@@ -14,6 +14,8 @@ export class ProductService {
   	constructor(private http: HttpClient) {}
 
 	getAllProducts(): Observable<any> {
+		const token = localStorage.getItem('token');
+  		console.log('[ProductService] Token utilisé :', token);
 		return this.http.get(`${this.apiUrl}/all_product`).pipe(
 		catchError(error => {
 			console.error('API Error:', {

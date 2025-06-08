@@ -23,14 +23,8 @@ export class AppComponent implements OnInit{
 
     logout() {
       this.authService.logout();
+      console.log('[app.component] isLoggedIn :: ', this.authService.isLoggedIn());
     }
-
-    // logout() {
-    //   this.authService.logout().subscribe({
-    //     next: _ => { this.navigateToLogin(); },
-    //     error: _ => { this.navigateToLogin(); }
-    //   })
-    // }
 
     navigateToLogin() {
       this.router.navigate(['login']);

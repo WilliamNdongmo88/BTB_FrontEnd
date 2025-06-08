@@ -24,7 +24,15 @@ export class ProductListComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    const token = localStorage.getItem('token');
+    console.log('[ProductListComponent] Token détecté avant chargement produits:', token);
+
+    if (token) {
+      this.loadProducts();
+    } else {
+      // Retente après un petit délai
+      setTimeout(() => this.loadProducts(), 50);
+    }
   }
 
   loadProducts(): void {
