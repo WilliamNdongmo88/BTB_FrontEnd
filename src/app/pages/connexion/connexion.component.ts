@@ -9,9 +9,8 @@ import { Subscription } from 'rxjs';
   selector: 'app-connexion',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  template: `<div> </div>`,
-  //templateUrl: //./connexion.component.html
-  //styleUrl: //'./connexion.component.css'
+  templateUrl:'./connexion.component.html',
+  styleUrl: './connexion.component.css'
 })
 export class ConnexionComponent{
     loginForm: FormGroup;
