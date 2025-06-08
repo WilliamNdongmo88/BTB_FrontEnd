@@ -171,8 +171,8 @@ input[type="email"]:focus {
 .separator::before, .separator::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #ddd;
-  position: absolute;
+  border-bottom: 2px solid #ddd;
+  position: static;
   top: 50%;
   width: 45%;
 }

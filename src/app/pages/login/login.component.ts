@@ -51,22 +51,30 @@
 // }
 
 
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 declare const google: any;
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit  {
+  loginForm: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder, private http: HttpClient, private authService: AuthService) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
+  
+  ngOnInit (): void {
     // Initialisation du SDK Google Identity
     google.accounts.id.initialize({
       client_id: '661537133165-bak5ui2p3k1h5gadof82o5055ct1m1tg.apps.googleusercontent.com',
@@ -75,15 +83,32 @@ export class LoginComponent implements OnInit {
 
     // Rendu du bouton
     google.accounts.id.renderButton(
-      document.getElementById('googleSignInDiv'),
-      { theme: 'outline', size: 'large' }
+      document.getElementById("googleSignInDiv"),
+      {
+        theme: "outline", // ou "filled_blue", "filled_black"
+        size: "large",    // ou "small", "medium"
+        text: "signin", // ou "signup_with", "continue_with", "signin"
+        shape: "rectangular", // ou "pill", "circle", "square"
+        logo_alignment: "left", // ou "center"
+        width: 136, // Largeur personnalisée en pixels
+      }
     );
+
+
   }
 
   handleCredentialResponse(response: any) {
     const googleIdToken = response.credential;
 
     this.authService.loginWithGoogle(googleIdToken);
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      const email = this.loginForm.value.email;
+      console.log('Submitted Email:', email);
+      // Appelle ici ton service pour gérer l'envoi vers le backend
+    }
   }
 }
 

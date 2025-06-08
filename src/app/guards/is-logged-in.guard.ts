@@ -21,25 +21,15 @@ import { inject } from '@angular/core';
 //     return true;
 // };
 
+
 export const isLoggedInGuard: CanActivateFn = (route, state) => {
-    const authService = inject(AuthService);
-    const router = inject(Router);
-    
-    if (authService.user() == undefined) {
-      return authService.getUser().pipe(
-        map(_ => true),
-        catchError(_ => router.navigate(['login']))
-      )
-    }
-    console.log('authService user :: '+ !authService.user());
-    if (!authService.user()) {
-      router.navigate(['login']);
-    }
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-    if (!authService.isLoggedIn()) {
-      router.navigate(['/login']);
-      return false;
-    }
+  if (!authService.isLoggedIn()) {
+    router.navigate(['/login']);
+    return false;
+  }
 
-    return true;
+  return true;
 };

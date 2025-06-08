@@ -8,26 +8,26 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="login()">
         <input
-        type="email"
-        id="email"
-        class="form-control"
-        placeholder="E-mail"
-        formControlName="username"
-        [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="E-mail"
+            formControlName="username"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
         />
         <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-        Adresse email invalide
+            Adresse email invalide
         </div>
         <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        formControlName="password"
-        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
         />
         <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        Mot de passe requis
+            Mot de passe requis
         </div>
         <div *ngIf="error" class="alert alert-danger py-2 error-message">
             {{ error }}

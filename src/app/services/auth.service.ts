@@ -45,26 +45,6 @@ export class AuthService {
 		)
 	}
 
- 	getUser(): Observable<User | null | undefined> {
- 		return this.http.get('http://localhost:8050/api/sessions/me/').pipe(
- 			tap((result: any) => {
-				console.log('getUse :=>', result.user);
- 				const user = Object.assign(new User(), result);
- 				this.user.set(user);
- 			}),
- 			map((result: any) => { return this.user(); })
-		)
- 	}
-
- 	// logout() {
- 	// 	return this.http.get('http://localhost:8050/api/deconnexion').pipe(///sessions/logout/
- 	// 		tap((result: any) => {
- 	// 			localStorage.removeItem('token');
- 	// 			this.user.set(null);
- 	// 		})
- 	// 	)
- 	// }
-
     loginWithGoogle(googleIdToken: string) {
 		this.isUserLogin = false;
 		this.isUserGoogle = true;

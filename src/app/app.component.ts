@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
     
 
     ngOnInit(): void {
-      console.log('authService user valeur :: '+ this.authService.user());
+      localStorage.removeItem('token');
     }
 
     logout() {
