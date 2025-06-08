@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { BehaviorSubject, map, Observable, of, tap, throwError } from "rxjs";
 import { User } from "../models/user.model";
+import { Route, Router } from "@angular/router";
 
  export interface LoginCredentials {
     username: string,
@@ -17,12 +18,14 @@ import { User } from "../models/user.model";
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private http = inject(HttpClient);
+  private http = inject(HttpClient);
 	private apiUrl = 'http://localhost:8050/api/'; 
 	user = signal<User | undefined | null>(undefined);
+  
+  constructor(private router: Router){}
 
     
-    connexion(credentials: LoginCredentials): Observable<User | null | undefined> {
+  connexion(credentials: LoginCredentials): Observable<User | null | undefined> {
 		console.log('Credentials Sending:', credentials);
  		return this.http.post(this.apiUrl+'connexion', credentials).pipe(
  			tap((result: any) => {
@@ -47,13 +50,18 @@ export class AuthService {
 		)
  	}
 
- 	logout() {
- 		return this.http.get('http://localhost:8050/api/deconnexion').pipe(///sessions/logout/
- 			tap((result: any) => {
- 				localStorage.removeItem('token');
- 				this.user.set(null);
- 			})
- 		)
- 	}
+ 	// logout() {
+ 	// 	return this.http.get('http://localhost:8050/api/deconnexion').pipe(///sessions/logout/
+ 	// 		tap((result: any) => {
+ 	// 			localStorage.removeItem('token');
+ 	// 			this.user.set(null);
+ 	// 		})
+ 	// 	)
+ 	// }
 
+   	logout() {
+      localStorage.removeItem('token');
+      this.user.set(null);
+      this.router.navigate(['/connexion']);
+    }
 }

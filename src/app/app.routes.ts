@@ -9,7 +9,7 @@ import { isLoggedInGuard } from './guards/is-logged-in.guard';
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'connexion',
         pathMatch: 'full'
     },
     {
