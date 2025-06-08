@@ -35,7 +35,7 @@ export class ConnexionComponent{
     login() {
       this.loginSubscripton = this.authService.connexion( this.loginForm.value as LoginCredentials ).subscribe({
         next: result => {
-          console.log('result :: '+ JSON.stringify(result));
+          console.log('result 111:: '+ JSON.stringify(result));
           this.navigateHome(); 
           },
         error: error => {
