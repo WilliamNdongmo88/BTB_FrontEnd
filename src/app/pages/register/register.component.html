@@ -1,0 +1,60 @@
+<div class="card">
+  <div class="container">
+    <div class="text-center mb-4">
+      <img src="img/btb.jpg" alt="Logo" width="100" class="logo-img mb-3" />
+      <h3 class="fw-bold">Créer un compte</h3>
+      <p class="text-muted">Remplissez les informations ci-dessous</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        placeholder="Nom complet"
+        formControlName="name"
+        [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+      />
+      <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+        Le nom est requis
+      </div>
+
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="E-mail"
+        formControlName="email"
+        [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+      />
+      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+        Adresse email invalide
+      </div>
+
+      <input
+        type="password"
+        id="password"
+        class="form-control"
+        placeholder="Mot de passe"
+        formControlName="password"
+        [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+      />
+      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+        Mot de passe requis
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger py-2 error-message">
+        {{ error }}
+      </div>
+
+      <button class="btn-blue text-center" type="submit">S'inscrire</button>
+
+    </form>
+
+    <div class="card-footer bg-white border-top-0">
+      <small class="text-muted">Déjà inscrit ?
+        <a routerLink="/connexion" class="text-decoration-none">Se connecter</a>
+      </small>
+    </div>
+  </div>
+</div>

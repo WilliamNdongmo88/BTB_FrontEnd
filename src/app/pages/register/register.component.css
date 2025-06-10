@@ -1,0 +1,96 @@
+.card {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f6f8;
+}
+
+.container {
+  background: #ffffff;
+  max-width: 400px;
+  width: 100%;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.logo-img {
+  height: 90px;
+  width: 90px;
+  border-radius: 45px;
+}
+
+h3.fw-bold {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.text-muted {
+  font-size: 0.9375rem;
+  color: #6c757d;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #0033cc;
+  outline: none;
+}
+
+.btn-blue {
+  background-color: #0033cc;
+  color: #fff;
+  padding: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-blue:hover {
+  background-color: #0022aa;
+}
+
+.card-footer {
+  padding: 20px 40px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.margin-text {
+  margin-top: 15px;
+}
+
+.invalid-feedback {
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  color: red;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: red;
+  font-weight: bold;
+  font-size: 0.85rem;
+}

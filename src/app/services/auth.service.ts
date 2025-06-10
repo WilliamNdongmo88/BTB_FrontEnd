@@ -9,6 +9,20 @@ import { Route, Router } from "@angular/router";
     password: string
  }
 
+ export interface RegisterCredentials {
+    name: string,
+	email: string,
+    password: string
+ }
+
+ export interface ActiveCodeCredentials {
+    code: string,
+ }
+
+ export interface NewActiveCodeCredentials {
+    email: string,
+ }
+
  interface LoginResponse {
     [x: string]: any;
     Bearer: string,
@@ -27,6 +41,43 @@ export class AuthService {
   
   	constructor(private router: Router){}
 
+	register(credentials: RegisterCredentials): Observable<User | null | undefined> {
+        console.log('Credentials Sending:', credentials);
+		return this.http.post(this.apiUrl+'inscription', credentials).pipe(
+			tap((result: any) => {
+				console.log('result :=>', result);
+				const user = Object.assign(new User(), result['user']);
+				this.user.set(user);
+				console.log('user :=>', user);
+			}),
+			map((result: any) => { 
+				return this.user(); })
+		)
+    }
+
+	active(credentials: ActiveCodeCredentials): Observable<User | null | undefined> {
+		console.log('Credentials Sending:', credentials);
+        return this.http.post(this.apiUrl+'activation', credentials).pipe(
+			tap((result: any) => {
+				console.log('result :=>', result)
+			}),
+			map((result: any) => { 
+				return null; 
+			})
+		)
+    }
+
+	new_active_code(credentials: NewActiveCodeCredentials): Observable<User | null | undefined> {
+		console.log('Credentials Sending:', credentials);
+        return this.http.post(this.apiUrl+'new-activation-code', credentials).pipe(
+			tap((result: any) => {
+				console.log('result :=>', result)
+			}),
+			map((result: any) => { 
+				return null; 
+			})
+		);
+    }
     
 	connexion(credentials: LoginCredentials): Observable<User | null | undefined> {
 		this.isUserLogin = true;

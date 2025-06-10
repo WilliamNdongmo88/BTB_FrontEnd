@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService, LoginCredentials } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
@@ -8,9 +8,9 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-connexion',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
   templateUrl:'./connexion.component.html',
-  styleUrl: './connexion.component.css'
+  styleUrl: './connexion.component.css',
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
 })
 export class ConnexionComponent{
     loginForm: FormGroup;
@@ -35,7 +35,7 @@ export class ConnexionComponent{
     login() {
       this.loginSubscripton = this.authService.connexion( this.loginForm.value as LoginCredentials ).subscribe({
         next: result => {
-          console.log('result 111:: '+ JSON.stringify(result));
+          console.log('result :: '+ JSON.stringify(result));
           this.navigateHome(); 
           },
         error: error => {
