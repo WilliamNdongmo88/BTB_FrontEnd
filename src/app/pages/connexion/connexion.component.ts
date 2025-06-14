@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService, LoginCredentials } from '../../services/auth.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,19 +11,22 @@ import { Subscription } from 'rxjs';
   standalone: true,
   templateUrl:'./connexion.component.html',
   styleUrl: './connexion.component.css',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, MatProgressSpinnerModule],
 })
 export class ConnexionComponent{
     loginForm: FormGroup;
     submitted = false;
     invalidCredentials = false;
+    loading = false;
+    isError = false;
+    errorMessage: string = '';
     error = '';
 
  	  private loginSubscripton: Subscription | null = null;
 
     constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
       this.loginForm = this.fb.group({
-        username: ['', [Validators.required, Validators.email]],
+        email: ['', [Validators.required, Validators.email]],
         password: ['', Validators.required],
       });
     }
@@ -33,14 +37,30 @@ export class ConnexionComponent{
     }
 
     login() {
+      console.log('----login()----');
+      this.submitted=true;
+      console.log('this.loginForm.invalid '+ this.loginForm.invalid);
+      if (this.loginForm.invalid) {
+          return; 
+      }
+      this.loading = true;
       this.loginSubscripton = this.authService.connexion( this.loginForm.value as LoginCredentials ).subscribe({
         next: result => {
-          console.log('result :: '+ JSON.stringify(result));
+          console.log('[ConnexionComponent] result :: '+ JSON.stringify(result));
           this.navigateHome(); 
-          },
-        error: error => {
-          console.error('Server response:', error.error);
-          this.invalidCredentials = true; }
+        },
+        error: (err) => {
+            this.loading = false;
+            this.isError=true;
+            console.error('Erreur API :', err);
+            this.errorMessage  = err.error.message.split(':')[1].trim();
+            this.submitted = false;
+            this.loginForm.reset();
+        },
+        complete: () => {
+            this.loading = false;
+            this.submitted = false;
+        }
       });
     }
 

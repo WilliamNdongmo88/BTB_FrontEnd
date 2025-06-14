@@ -6,4 +6,7 @@
  	justify-content: center;
 }
 
-
+a {
+  text-decoration: none;
+  color: inherit; /* Optionnel, pour hériter la couleur du parent */
+}

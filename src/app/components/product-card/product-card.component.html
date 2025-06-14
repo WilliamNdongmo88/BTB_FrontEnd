@@ -1,17 +1,44 @@
-<div class="product-card">
-    <figure class="art">
-        <img [src]="product.imageUrl" alt="Image product" class="product-image" />
-    </figure>
-    <div class="capacity">
-        <div class="main">
-            <div class="name_price">
-                <h5 class="name">{{ product.name }}</h5>
-                <p class="price">{{ product.price }} €</p>
-            </div>
-            <!-- Autres éléments a placer a droite -->
+
+<div class="card">
+  <div class="wishlist">
+    <mat-icon 
+      class="love-icon" 
+      [ngClass]="{ loved: liked }" 
+      (click)="onLoveClick($event)">
+      {{ liked ? 'favorite' : 'favorite_border' }}
+    </mat-icon>
+  </div>
+
+
+  <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
+
+    <div class="top-row">
+        <div>
+            <h2 class="title">{{ product.name }}</h2>
         </div>
-        <div class="description">
-            {{product.description}}
+        <div>
+            <p class="price">${{ product.price.toFixed(2) }}</p>
         </div>
     </div>
+    <p class="description">
+        {{ product.description.length > 80 ? (product.description | slice:0:50) + '…' : product.description }}
+    </p>
+
+    <div class="rating">
+        <div class="star">
+            <mat-icon 
+            *ngFor="let star of [].constructor(5); let i = index" 
+            [style.color]="getStarColor(i)">
+            star
+            </mat-icon>
+        </div>
+        <div class="rating-count">
+            <span>{{ likeCount }}</span>
+        </div>
+    </div>
+
+    <div class="bottom-row">
+      <button class="add-button" (click)="onAddToCart($event)">Add to Cart</button>
+    </div>
+  
 </div>

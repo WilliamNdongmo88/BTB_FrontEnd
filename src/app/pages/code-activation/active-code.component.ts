@@ -18,6 +18,9 @@ export class ActiveCodeComponent{
     submitted = false;
     isNewCode = false;
     invalidCredentials = false;
+    loading = false;
+    isError = false;
+    errorMessage: string = '';
     error = '';
 
     activeSubscripton: Subscription | null = null;
@@ -47,29 +50,29 @@ export class ActiveCodeComponent{
         if (this.activeForm.invalid) {
             return; // Stoppe la soumission si le champ est invalide
         }
+
+        this.loading = true;
         this.activeSubscripton = this.authService.active( this.activeForm.value as ActiveCodeCredentials ).subscribe({
             next: result => {
             console.log('result :: '+ JSON.stringify(result));
             this.navigateHome(); 
             },
-            error: error => {
-            console.error('Server response:', error.error);
-            this.invalidCredentials = true; }
+            error: (err) => {
+                this.loading = false;
+                this.isError=true;
+                console.error('Erreur API :', err);
+                this.errorMessage  = err.error.message.split(':')[1].trim();
+                this.submitted = false;
+                this.activeForm.reset();
+            },
+            complete: () => {
+                this.loading = false;
+                this.submitted = false;
+            }
         });
         this.activeForm.reset();
         this.submitted=false;
     }
-
-    // new_active(){
-    //     console.log('----new_active()----');
-    //     this.submitted=true;
-    //     if (this.new_activeForm.invalid) {
-    //         return; // Stoppe la soumission si le champ est invalide
-    //     }
-    //     this.authService.new_active_code( this.new_activeForm.value as NewActiveCodeCredentials ).subscribe({});
-    //     this.new_activeForm.reset();
-    //     this.submitted=false;
-    // }
 
     new_active() {
       console.log('----new_active()----');
@@ -78,26 +81,34 @@ export class ActiveCodeComponent{
       if (this.new_activeForm.invalid) {
           return;
       }
-
+      this.loading = true;
       this.authService.new_active_code(this.new_activeForm.value as NewActiveCodeCredentials)
           .subscribe({
-              next: (res) => {
-                  console.log('API appelée avec succès');
-                  // popup de confirmation
-                  this.new_activeForm.reset();
-                  this.submitted = false;
-              },
-              error: (err) => {
-                  console.error('Erreur API :', err);
-                  // ici tu peux afficher un message d’erreur
-                  this.submitted = false;
-          }
+            next: (res) => {
+                console.log('API appelée avec succès');
+                // popup de confirmation
+                this.new_activeForm.reset();
+                this.submitted = false;
+            },
+            error: (err) => {
+                this.loading = false;
+                this.isError=true;
+                console.error('Erreur API :', err);
+                this.errorMessage  = err.error.message.split(':')[1].trim();
+                this.submitted = false;
+                this.new_activeForm.reset();
+            },
+            complete: () => {
+                this.loading = false;
+                this.submitted = false;
+            }
       });
     }
 
 
     changeBoolean(){
-        this.isNewCode=!this.isNewCode;
+      this.isNewCode=!this.isNewCode;
+      this.isError=!this.isError;
     }
 
     navigateHome() {

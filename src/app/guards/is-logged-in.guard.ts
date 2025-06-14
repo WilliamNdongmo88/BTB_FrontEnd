@@ -1,35 +1,31 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { catchError, map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
-
-// export const isLoggedInGuard: CanActivateFn = (route, state) => {
-//     const authService = inject(AuthService);
-//     const router = inject(Router);
-
-//     if (authService.getUserGoogle() == undefined) {
-//       return authService.getUser().pipe(
-//         map(_ => true),
-//         catchError(_ => router.navigate(['login']))
-//       )
-//     }
-//     console.log('isLoggedInGuard ::: ' + authService.getUser())
-//     if (!authService.getUserGoogle()) {
-//         router.navigate(['login']);
-//     }
-
-//     return true;
-// };
-
 
 export const isLoggedInGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isLoggedIn()) {
-    router.navigate(['/login']);
-    return false;
+  const user = authService.getUser();
+  console.log('[isLoggedInGuard] user :: ' + JSON.stringify(user))
+  if (authService.isLoggedIn() && user ) {
+    return true;
   }
 
-  return true;
+  router.navigate(['login']);
+  return false;
 };
+
+// export const isLoggedInGuard: CanActivateFn = (route, state) => {
+//   const authService = inject(AuthService);
+//   const router = inject(Router);
+
+//   console.log('[isLoggedInGuard] ::: ' + authService.isLoggedIn())
+//   if (!authService.isLoggedIn()) {
+//     router.navigate(['/login']);
+//     return false;
+//   }
+
+//   return true;
+// };

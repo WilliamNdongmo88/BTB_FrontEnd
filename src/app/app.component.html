@@ -1,15 +1,66 @@
-@if(authService.user()) {
+
+<!-- @if(authService.isLoggedIn() && authService.user()) {
  	<mat-toolbar>
  		<button mat-icon-button (click)="navigateHome()"><mat-icon>home</mat-icon></button>
  		<p>Welcome {{authService.user()?.name}}</p>
-		<button mat-flat-button color="warn" (click)="logout()">Logout</button>
+		<button mat-flat-button color="warn" (click)="logout()" [disabled]="loading">
+			@if(!loading){
+				<span>Déconnexion</span>
+			}@else {
+				<div class="spinner-overlay">
+					<mat-spinner diameter="25"></mat-spinner>
+				</div>
+			}
+			
+		</button>
  	</mat-toolbar>
-}@else if(authService.isLoggedIn()) {
-	<mat-toolbar>
- 		<button mat-icon-button (click)="navigateHome()"><mat-icon>home</mat-icon></button>
- 		<p>Welcome {{authService.getUserGoogle()?.name}}</p>
- 		<button mat-flat-button color="warn" (click)="logout()">Logout</button>
- 	</mat-toolbar>
- }
+} -->
+@if(authService.isLoggedIn() && authService.user()){
+	<nav class="navbar">
+	<div class="navbar-left">
+		<img src="img/btb.jpg" alt="Logo" class="logo" />
+		<span class="brand">BTB-Shop</span>
+	</div>
+
+	<div class="navbar-center-left">
+		<div class="nav-links">
+			<div class="categories">
+				<div>
+					<a routerLink="/categories">Catégories </a>
+				</div>
+				<div class="matIcon">
+					<mat-icon>expand_more</mat-icon>
+				</div>
+		</div>
+			<a routerLink="/deals">Offres</a>
+			<a routerLink="/whats-new">Noveautés</a>
+			<a routerLink="/delivery">Livraison</a>
+		</div>
+	</div>
+
+	<div class="navbar-center-right">
+		<input type="text" placeholder="Search Product" />
+		<mat-icon class="search-icon">search</mat-icon>
+	</div>
+
+	<div class="navbar-right">
+		<a routerLink="/account">
+			<mat-icon>person</mat-icon>
+			{{ authService.user()?.name | slice:0:9 }}
+		</a>
+		<a routerLink="/cart"><mat-icon>shopping_cart</mat-icon></a>
+		<button mat-button (click)="logout()" [disabled]="loading">
+			@if(!loading){
+				<mat-icon>logout</mat-icon>
+			}@else {
+				<div class="spinner-overlay">
+					<mat-spinner diameter="25"></mat-spinner>
+				</div>
+			}
+		</button>
+	</div>
+	</nav>
+}
+
 <router-outlet /> 
 

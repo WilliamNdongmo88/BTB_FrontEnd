@@ -1,3 +1,15 @@
+<div *ngIf="loading" class="spinner-container mt-3">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+</div>
+
+<div *ngIf="isError" class="error-container mt-3">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">{{errorMessage}}</span>
+  </div>
+</div>
+
 <div class="card">
     @if (!isNewCode) {  
         <div class="container">
@@ -38,7 +50,7 @@
             <div class="text-center mb-4">
                 <img src="img/btb.jpg" alt="Logo" width="100" class="logo-img mb-3" />
                 <h3 class="fw-bold">Nouveau code d'activation du compte</h3>
-                <p class="text-muted">Veuillez saisir votre adresse mail pour recevoir un nouveau code</p>
+                <p class="text-muted">Veuillez saisir votre adresse e-mail pour recevoir un nouveau code</p>
             </div>
 
             <form [formGroup]="new_activeForm" (ngSubmit)="new_active()">

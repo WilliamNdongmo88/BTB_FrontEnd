@@ -7,6 +7,8 @@ import { isLoggedInGuard } from './guards/is-logged-in.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ActiveCodeComponent } from './pages/code-activation/active-code.component';
+import { NewPasswordComponent } from './pages/new-password/new-password.component';
+import { PasswordComponent } from './pages/password/password.component';
 
 export const routes: Routes = [
     {
@@ -24,4 +26,6 @@ export const routes: Routes = [
     {path: 'connexion',component: ConnexionComponent},
     { path: 'register', component: RegisterComponent },
     { path: 'active-code', component: ActiveCodeComponent },
+    { path: 'new-password', component: NewPasswordComponent },
+    { path: 'password', component: PasswordComponent },
 ];

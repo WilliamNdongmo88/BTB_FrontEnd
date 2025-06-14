@@ -43,8 +43,12 @@
         Mot de passe requis
       </div>
 
-      <div *ngIf="error" class="alert alert-danger py-2 error-message">
-        {{ error }}
+      <div *ngIf="isError" class="alert alert-danger py-2 error-message">
+          {{ errorMessage }}
+      </div>
+
+      <div *ngIf="loading" class="spinner mt-3">
+          <span class="visually-hidden">Chargement...</span>
       </div>
 
       <button class="btn-blue text-center" type="submit">S'inscrire</button>
@@ -53,7 +57,7 @@
 
     <div class="card-footer bg-white border-top-0">
       <small class="text-muted">Déjà inscrit ?
-        <a routerLink="/connexion" class="text-decoration-none">Se connecter</a>
+        <a routerLink="/connexion" class="reset-link">Se connecter</a>
       </small>
     </div>
   </div>

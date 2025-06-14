@@ -7,23 +7,35 @@
         <div class="title">Commençons avec votre e-mail</div>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <input type="email" formControlName="email" placeholder="E-mail" required>
-            <button class="btn-blue" type="submit">Continuer</button>
-        </form>
+                <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    placeholder="E-mail"
+                    formControlName="email"
+                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                />
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                    L'email est requis
+                </div>
+
+                <div *ngIf="isError" class="alert alert-danger py-2 error-message">
+                    {{ errorMessage }}
+                </div>
+
+                <div *ngIf="loading" class="spinner mt-3">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+
+                <button class="btn-blue text-center" type="submit">Continuer</button>
+
+            </form>
 
         <div class="separator">Ou continuez avec</div>
 
         <div class="social-login">
             <div id="googleSignInDiv"></div>
-
-            <a href="http://localhost:8050/api/oauth2/authorization/facebook">
-                <img src="https://www.facebook.com/favicon.ico" alt="Facebook"> Facebook
-            </a>
-            <a href="#">
-                <img src="https://www.apple.com/favicon.ico" alt="Apple"> Apple
-            </a>
         </div>
-
 
         <div class="footer">
             En poursuivant, vous acceptez nos
@@ -32,7 +44,6 @@
         </div>
     </div>
 </div>
-
 
 
 

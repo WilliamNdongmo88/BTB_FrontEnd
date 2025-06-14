@@ -1,61 +1,9 @@
-// import { GoogleLoginProvider, SocialUser } from '@abacritt/angularx-social-login';
-// import { CommonModule } from '@angular/common';
-// import { HttpClient } from '@angular/common/http';
-// import { Component } from '@angular/core';
-// import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-// import { ActivatedRoute, Route, Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-login',
-//   imports: [ReactiveFormsModule, CommonModule],
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent {
-//   authService: any;
-//   http: any;
-//   loginForm: FormGroup;
-
-//   constructor(private fb: FormBuilder,private route: ActivatedRoute, private router : Router) {
-//     this.loginForm = this.fb.group({
-//       email: ['', [Validators.required, Validators.email]]
-//     });
-//   }
-
-//   onSubmit(): void {
-//     if (this.loginForm.valid) {
-//       const email = this.loginForm.value.email;
-//       console.log('Submitted Email:', email);
-//       // Appelle ici ton service pour gérer l'envoi vers le backend
-//     }
-//   }
-
-//   ngOnInit() {
-//     // Vérifier si on revient de l'authentification avec un token
-//     console.log("Vérifier si on revient de l'authentification avec un token");
-//     this.route.queryParams.subscribe(params => {
-//       console.log('params[token] : ', params['token']);
-//       if (params['token']) {
-//         localStorage.setItem('token', params['token']);
-//         // Redirection vers la page d'accueil ou autre
-//         this.router.navigate(['/home']);
-//       }
-//     });
-//   }
-
-//   loginWithGoogle() {
-//     // Redirection complète (sans popup)
-//     window.location.href = 'http://localhost:8050/api/oauth/google';
-//   }
-
-// }
-
-
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, NewActiveCodeCredentials } from '../../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 declare const google: any;
 
@@ -67,12 +15,23 @@ declare const google: any;
 })
 export class LoginComponent implements OnInit  {
   loginForm: FormGroup;
+  submitted = false;
+  loading = false;
+  isError = false;
+  isEmailCorrect = false;
+  errorMessage: string = '';
+  private check_emailSubscripton: Subscription | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
+
+  get f() {
+    return this.loginForm.controls;
+  }
+
   
   ngOnInit (): void {
     // Initialisation du SDK Google Identity
@@ -87,29 +46,68 @@ export class LoginComponent implements OnInit  {
       {
         theme: "outline", // ou "filled_blue", "filled_black"
         size: "large",    // ou "small", "medium"
-        text: "signin", // ou "signup_with", "continue_with", "signin"
+        text: "signin_with", // ou "signup_with", "continue_with", "signin"
         shape: "rectangular", // ou "pill", "circle", "square"
-        logo_alignment: "left", // ou "center"
-        width: 136, // Largeur personnalisée en pixels
+        logo_alignment: "center", // ou "center"
+        width: 400, // Largeur personnalisée en pixels
       }
     );
-
-
   }
 
-  handleCredentialResponse(response: any) {
-    const googleIdToken = response.credential;
+    async handleCredentialResponse(response: any) {
+      const googleIdToken = response.credential;
+      this.loading = true;
 
-    this.authService.loginWithGoogle(googleIdToken);
-  }
-
-  onSubmit(): void {
-    if (this.loginForm.valid) {
-      const email = this.loginForm.value.email;
-      console.log('Submitted Email:', email);
-      // Appelle ici ton service pour gérer l'envoi vers le backend
+      try {
+        await this.authService.loginWithGoogle(googleIdToken);
+      } catch (error) {
+        console.error('Erreur Google Login:', error);
+      } finally {
+        this.loading = false;
+      }
     }
-  }
+
+
+    onSubmit() {
+      this.submitted = true;
+      if(this.isError)this.isError=false;
+      if (this.loginForm.valid) {
+        this.loading = true;
+        this.check_emailSubscripton = this.authService.check_email( this.loginForm.value as NewActiveCodeCredentials ).subscribe({
+          next: result => {
+              console.log('result :: ', result);
+              this.navigateHome(); 
+          },
+          error: (err) => {
+              this.loading = false;
+              this.isError=true;
+              console.error('Erreur API :', err);
+              console.error('Erreur API :', err.error.message);
+              this.errorMessage  = err.error.message.split(':')[1].trim();
+              this.submitted = false;
+              this.loginForm.reset();
+          },
+          complete: () => {
+              this.loading = false;
+              this.submitted = false;
+          }
+        });
+      }
+    }
+
+    navigateHome() {
+        this.router.navigate(['/password']).then(
+          success => {
+            console.log('Navigation réussie ?', success);
+            if (!success) {
+              console.error('Échec de la navigation vers /home');
+            }
+          },
+          error => {
+            console.error('Erreur lors de la navigation :', error);
+          }
+        );
+    }
 }
 
 

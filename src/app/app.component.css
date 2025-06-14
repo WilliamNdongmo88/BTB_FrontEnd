@@ -1,10 +1,139 @@
-mat-toolbar {
- 	display: flex;
- 	align-items: center;
- 	padding: 0 20px;
- }
+:root {
+  --background-color: rgb(104, 151, 177);
+  --background-color-hover: rgb(51, 124, 173);
+}
 
- mat-toolbar p {
- 	flex-grow: 1;
- 	margin: 0;
- }
+ .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 2rem;
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  font-family: sans-serif;
+}
+
+.logo {
+  height: 30px;
+  margin-right: 8px;
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #1a1a1a;
+  margin-right: 20px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center-left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.categories {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.matIcon{
+  margin-top: 4px;
+}
+
+.nav-links a {
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  color: #333;
+  font-weight: 500;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background-color: var(--background-color-hover); /* Couleur soulignée au hover */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--background-color-hover);; /* Couleur du texte au hover */
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1); /* Soulignement animé */
+}
+
+.navbar-center-right {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  padding: 4px 10px;
+  width: 300px;
+}
+
+.navbar-center-right input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
+
+.search-icon {
+  color: #999;
+  margin-left: 5px;
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: -28px;
+}
+
+.navbar-right a {
+  margin-left: 20px;
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.navbar-right mat-icon {
+  margin-right: 4px;
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(67, 66, 66, 0.5); /* transparent blanc*/ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /*backdrop-filter: blur(0px);  Optionnel pour un effet flou */
+}

@@ -1,3 +1,4 @@
+
 <div class="card">
   <div class="container">
     <div class="text-center mb-4">
@@ -12,7 +13,7 @@
             id="email"
             class="form-control"
             placeholder="E-mail"
-            formControlName="username"
+            formControlName="email"
             [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
         />
         <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
@@ -29,15 +30,20 @@
         <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
             Mot de passe requis
         </div>
-        <div *ngIf="error" class="alert alert-danger py-2 error-message">
-            {{ error }}
+
+        <div *ngIf="isError" class="alert alert-danger py-2 error-message">
+            {{ errorMessage }}
+        </div>
+
+        <div *ngIf="loading" class="custom-spinner spinner-overlay">
+            <mat-spinner diameter="50" color="warn"></mat-spinner>
         </div>
 
         <button class="btn-blue text-center" type="submit">Connexion</button>
 
         <div class="text-center margin-text">
             <small class="text-muted">Mot de passe oublié ?
-            <a href="#" class="text-decoration-none">Réinitialiser</a>
+                <a routerLink="/new-password" class="text-decoration-none">Réinitialiser</a>
             </small>
         </div>
     </form>

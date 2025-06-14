@@ -1,3 +1,8 @@
+:root {
+  --background-color: rgb(104, 151, 177);
+  --background-color-hover: rgb(51, 124, 173);
+}
+
 .card {
   height: 100vh;
   display: flex;
@@ -35,7 +40,7 @@ h3.fw-bold {
 }
 
 .reset-link {
-  color: #2e468c;
+  color: var(--background-color);
   /* text-decoration: underline; */
   font-weight: 500;
   cursor: pointer;
@@ -43,7 +48,7 @@ h3.fw-bold {
 }
 
 .reset-link:hover {
-  color: #0033cc;
+  color: var(--background-color-hover);
   /* text-decoration: none; */
 }
 
@@ -62,12 +67,12 @@ input {
 }
 
 input:focus {
-  border-color: #0033cc;
+  border-color: var(--background-color-hover);
   outline: none;
 }
 
 .btn-blue {
-  background-color: #0033cc;
+  background-color: var(--background-color);
   color: #fff;
   padding: 12px;
   font-weight: bold;
@@ -78,7 +83,7 @@ input:focus {
 }
 
 .btn-blue:hover {
-  background-color: #0022aa;
+  background-color: var(--background-color-hover);
 }
 
 .card-footer {
@@ -94,11 +99,15 @@ input:focus {
 
 .invalid-feedback {
   text-align: left;
-  margin-top: -10px;
+  margin-top: -16px;
   margin-bottom: 10px;
   color: red;
-  font-weight: bold;
-  font-size: 0.85rem;
+  /* font-weight: bold; */
+  font-size: 0.65rem;
+}
+
+.is-invalid {
+  border: 1px solid red;
 }
 
 .error-message {
@@ -111,4 +120,19 @@ input:focus {
 .text-back{
   margin-top: 15px;
   /* margin-bottom: -25px; */
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: red;
+  background-color: var(--background-color);
 }

@@ -18,6 +18,9 @@ export class RegisterComponent {
     invalidCredentials = false;
     error: string | null = null;
     private registerSubscripton: Subscription | null = null;
+    loading = false;
+    isError = false;
+    errorMessage: string = '';
     
 
     constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
@@ -33,31 +36,40 @@ export class RegisterComponent {
     }
 
     register() {
-        this.submitted=true;
-        this.registerSubscripton = this.authService.register( this.registerForm.value as RegisterCredentials ).subscribe({
-            next: result => {
-                console.log('result :: '+ JSON.stringify(result));
-                this.navigateHome(); 
-            },
-            error: error => {
-                console.error('Server response:', error.error);
-                this.invalidCredentials = true; 
-            }
-        });
+      this.loading = true;
+      this.submitted=true;
+      this.registerSubscripton = this.authService.register( this.registerForm.value as RegisterCredentials ).subscribe({
+          next: result => {
+              console.log('result :: '+ JSON.stringify(result));
+              this.navigateHome(); 
+          },
+          error: (err) => {
+              this.loading = false;
+              this.isError=true;
+              console.error('Erreur API :', err);
+              this.errorMessage  = err.error.message.split(':')[1].trim();
+              this.submitted = false;
+              this.registerForm.reset();
+          },
+          complete: () => {
+              this.loading = false;
+              this.submitted = false;
+          }
+      });
     }
 
-        navigateHome() {
-        this.router.navigate(['/active-code']).then(
-          success => {
-            console.log('Navigation réussie ?', success);
-            if (!success) {
-              console.error('Échec de la navigation vers /active-code');
-            }
-          },
-          error => {
-            console.error('Erreur lors de la navigation :', error);
+    navigateHome() {
+      this.router.navigate(['/active-code']).then(
+        success => {
+          console.log('Navigation réussie ?', success);
+          if (!success) {
+            console.error('Échec de la navigation vers /active-code');
           }
-        );
+        },
+        error => {
+          console.error('Erreur lors de la navigation :', error);
+        }
+      );
     }
 
     ngOnDestroy(): void {
