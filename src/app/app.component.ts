@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,17 +9,28 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule,CommonModule],
+  imports: [RouterOutlet, MatToolbarModule, 
+            MatButtonModule, MatIconModule, 
+            MatProgressSpinnerModule,CommonModule,
+            RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
 })
 export class AppComponent implements OnInit{
-    
+    showMenu = false;
 	  loading = false;
    	private router = inject(Router);
     authService = inject(AuthService);
-    
+
+
+    get isMobile(): boolean {
+      return window.innerWidth < 768;
+    }
+
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    }
 
     ngOnInit(): void {
       const token = localStorage.getItem('token');
@@ -35,8 +46,17 @@ export class AppComponent implements OnInit{
     logout() {
       this.loading = true; // Active le spinner
       this.authService.logout().subscribe({
-              next: result => {
-                console.log('[ConnexionComponent] result :: '+ JSON.stringify(result));
+              next: isUserGoogle => {
+                if (isUserGoogle) {
+                  localStorage.removeItem('token');
+			          	localStorage.removeItem('refreshToken');
+                  this.navigateToLogin();
+                } else {
+                  localStorage.removeItem('token');
+				          localStorage.removeItem('refreshToken');
+                  this.navigateToConnexion();
+                }
+                console.log('[AppComponent] result :: '+ isUserGoogle);
               },
               error: (err) => {
                   console.error('Erreur API :', err);
@@ -48,8 +68,16 @@ export class AppComponent implements OnInit{
       //console.log('[app.component] isLoggedIn :: ', this.authService.isLoggedIn());
     }
 
+    onback(){
+      this.navigateHome();
+    }
+
     navigateToLogin() {
       this.router.navigate(['login']);
+    }
+
+    navigateToConnexion() {
+      this.router.navigate(['connexion']);
     }
 
     navigateHome() {

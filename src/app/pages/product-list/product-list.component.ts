@@ -5,16 +5,17 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent, RouterModule],
+  imports: [CommonModule, ProductCardComponent, RouterModule, MatProgressSpinnerModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit{
-
+  loading: boolean = false;
 
   products: Product[] = [];
 
@@ -36,13 +37,17 @@ export class ProductListComponent implements OnInit{
   }
 
   loadProducts(): void {
+    this.loading = true;
+
     this.productService.getAllProducts().subscribe({
       next: (data: Product[]) => {
         console.log('data : ', data);
         this.products = data;
+        this.loading = false;
       },
       error: (err) => {
         console.error('Erreur lors du chargement des produits', err);
+        this.loading = false;
       }
     });
   }

@@ -1,15 +1,16 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService, NewActiveCodeCredentials } from '../../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 declare const google: any;
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -17,12 +18,13 @@ export class LoginComponent implements OnInit  {
   loginForm: FormGroup;
   submitted = false;
   loading = false;
+  isLoadingG = false;
   isError = false;
   isEmailCorrect = false;
   errorMessage: string = '';
   private check_emailSubscripton: Subscription | null = null;
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -54,18 +56,28 @@ export class LoginComponent implements OnInit  {
     );
   }
 
-    async handleCredentialResponse(response: any) {
-      const googleIdToken = response.credential;
+    handleCredentialResponse(response: any) {
       this.loading = true;
+      this.cd.detectChanges(); // ✅ Force Angular à mettre à jour l’UI
 
-      try {
-        await this.authService.loginWithGoogle(googleIdToken);
-      } catch (error) {
-        console.error('Erreur Google Login:', error);
-      } finally {
-        this.loading = false;
-      }
+      const googleIdToken = response.credential;
+
+      this.authService.loginWithGoogle(googleIdToken).subscribe({
+        next: (result) => {
+          if (result) {
+            this.router.navigate(['/home']);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur d\'authentification Google :', err);
+        },
+        complete: () => {
+          this.loading = false;
+          this.cd.detectChanges(); // ✅ Met à jour l’UI quand c’est fini
+        }
+      });
     }
+
 
 
     onSubmit() {

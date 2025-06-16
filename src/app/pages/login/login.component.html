@@ -23,9 +23,9 @@
                     {{ errorMessage }}
                 </div>
 
-                <div *ngIf="loading" class="spinner mt-3">
-                    <span class="visually-hidden">Chargement...</span>
-                </div>
+                <div *ngIf="loading" class="spinner-overlay">
+					<mat-spinner diameter="25"></mat-spinner>
+				</div>
 
                 <button class="btn-blue text-center" type="submit">Continuer</button>
 
@@ -36,7 +36,9 @@
         <div class="social-login">
             <div id="googleSignInDiv"></div>
         </div>
-
+        <div *ngIf="isLoadingG" class="spinner-overlay">
+            <mat-spinner diameter="25"></mat-spinner>
+        </div>
         <div class="footer">
             En poursuivant, vous acceptez nos
             <a href="#">Conditions d'utilisation</a> et notre

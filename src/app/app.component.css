@@ -3,26 +3,31 @@
   --background-color-hover: rgb(51, 124, 173);
 }
 
- .navbar {
+a {
+  text-decoration: none;
+  color: inherit; /* Optionnel, pour hériter la couleur du parent */
+}
+
+.navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 2rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px 20px;
   background-color: white;
-  border-bottom: 1px solid #eee;
-  font-family: sans-serif;
+  border-bottom: 1px solid #ccc;
 }
 
 .logo {
   height: 30px;
   margin-right: 8px;
+  border-radius: 0px 11px 0px 11px;
 }
 
 .brand {
+  font-size: 1.5rem;
   font-weight: bold;
-  font-size: 1.2rem;
-  color: #1a1a1a;
-  margin-right: 20px;
+  color: #444;
 }
 
 .navbar-left {
@@ -32,8 +37,14 @@
 
 .navbar-center-left {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+}
+
+.navbar-center-left a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
 }
 
 .nav-links {
@@ -49,7 +60,7 @@
 }
 
 .matIcon{
-  margin-top: 4px;
+  margin-bottom: -6px;
 }
 
 .nav-links a {
@@ -58,7 +69,6 @@
   cursor: pointer;
   color: #333;
   font-weight: 500;
-  padding: 5px 10px;
   transition: color 0.3s ease;
 }
 
@@ -80,17 +90,15 @@
 }
 
 .nav-links a:hover::after {
-  transform: scaleX(1); /* Soulignement animé */
+  transform: scaleX(1.2); /* Soulignement animé */
 }
 
 .navbar-center-right {
   display: flex;
   align-items: center;
-  background-color: #f3f4f6;
-  border-radius: 6px;
-  padding: 4px 10px;
-  width: 300px;
+  gap: 5px;
 }
+
 
 .navbar-center-right input {
   border: none;
@@ -102,13 +110,19 @@
 .search-icon {
   color: #999;
   margin-left: 5px;
+  cursor: pointer;
 }
 
-.navbar-right {
+/* .navbar-right {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: -28px;
+} */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .navbar-right a {
@@ -136,4 +150,65 @@
   align-items: center;
   z-index: 1000;
   /*backdrop-filter: blur(0px);  Optionnel pour un effet flou */
+}
+
+.navbar-toggle {
+  display: none;
+  cursor: pointer;
+}
+
+/* TABLET */
+@media (max-width: 1023px) {
+  .brand {
+    font-size: 1.2rem;
+  }
+
+  .navbar-center-left a {
+    margin: 0 5px;
+  }
+
+  .navbar-center-right input {
+    max-width: 120px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-left, .navbar-right {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+
+  .navbar-center-left {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-center-left.show {
+    display: flex;
+  }
+
+  .navbar-center-right {
+    display: none;
+  }
+
+  .navbar-center-left a {
+    padding: 10px;
+    border-top: 1px solid #eee;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
 }

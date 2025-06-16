@@ -4,13 +4,14 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ActiveCodeCredentials, AuthService, NewActiveCodeCredentials, NewPassworCredentials } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-connexion',
   standalone: true,
   templateUrl:'./new-password.component.html',
   styleUrl: './new-password.component.css',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, MatProgressSpinnerModule],
 })
 export class NewPasswordComponent{
 
@@ -106,7 +107,7 @@ export class NewPasswordComponent{
         });
         setTimeout(() => {
           this.confirm_mailForm.reset();
-				}, 8000);
+				}, 20000);
     }
     
     new_pass() {
@@ -154,7 +155,7 @@ export class NewPasswordComponent{
 
 
     changeBoolean(){
-        window.location.reload();
+        // window.location.reload();
         this.isNewPass=!this.isNewPass;
         this.isError=!this.isError;
     }

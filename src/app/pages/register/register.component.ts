@@ -4,13 +4,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { AuthService, RegisterCredentials } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, MatProgressSpinnerModule],
 })
 export class RegisterComponent {
     registerForm: FormGroup;
@@ -36,26 +37,29 @@ export class RegisterComponent {
     }
 
     register() {
-      this.loading = true;
+      
       this.submitted=true;
-      this.registerSubscripton = this.authService.register( this.registerForm.value as RegisterCredentials ).subscribe({
-          next: result => {
-              console.log('result :: '+ JSON.stringify(result));
-              this.navigateHome(); 
-          },
-          error: (err) => {
-              this.loading = false;
-              this.isError=true;
-              console.error('Erreur API :', err);
-              this.errorMessage  = err.error.message.split(':')[1].trim();
-              this.submitted = false;
-              this.registerForm.reset();
-          },
-          complete: () => {
-              this.loading = false;
-              this.submitted = false;
-          }
-      });
+      if (this.registerForm.valid){
+        this.loading = true;
+        this.registerSubscripton = this.authService.register( this.registerForm.value as RegisterCredentials ).subscribe({
+            next: result => {
+                console.log('result :: '+ JSON.stringify(result));
+                this.navigateHome(); 
+            },
+            error: (err) => {
+                this.loading = false;
+                this.isError=true;
+                console.error('Erreur API :', err);
+                this.errorMessage  = err.error.message.split(':')[1].trim();
+                this.submitted = false;
+                this.registerForm.reset();
+            },
+            complete: () => {
+                this.loading = false;
+                this.submitted = false;
+            }
+        });
+      }
     }
 
     navigateHome() {

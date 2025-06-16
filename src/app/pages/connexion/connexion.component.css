@@ -24,7 +24,7 @@
 .logo-img {
   height: 90px;
   width: 90px;
-  border-radius: 45px;
+  border-radius: 0px 20px 0px 20px;
 }
 
 h3.fw-bold {
@@ -152,5 +152,97 @@ input:focus {
   backdrop-filter: blur(1px); /* Optionnel pour un effet flou */
 }
 
+@media (max-width: 1024px) {
+  .container {
+    padding: 30px;
+  }
 
+  h3.fw-bold {
+    font-size: 1.3rem;
+  }
 
+  input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .btn-blue {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .logo-img {
+    height: 70px;
+    width: 70px;
+  }
+
+  .text-muted,
+  .card-footer {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 10px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .container {
+    width: 100%;
+    padding: 20px;
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .logo-img {
+    height: 60px;
+    width: 60px;
+  }
+
+  h3.fw-bold {
+    font-size: 1.1rem;
+  }
+
+  .text-muted {
+    font-size: 0.8rem;
+  }
+
+  input {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .btn-blue {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .invalid-feedback {
+    font-size: 0.6rem;
+    margin-top: -14px;
+  }
+
+  .card-footer {
+    padding: 15px;
+    font-size: 0.75rem;
+  }
+
+  .error-message {
+    font-size: 0.75rem;
+  }
+
+  .margin-text {
+    font-size: 0.8rem;
+  }
+
+  .text-decoration-none {
+    font-size: 0.8rem;
+  }
+
+  .spinner-overlay {
+    padding: 20px;
+  }
+}

@@ -1,18 +1,24 @@
-@if (!products) {
-  <div class="spinner mt-3">
-      <span class="visually-hidden">Chargement...</span>
-  </div>
-}
+<div *ngIf="loading" class="spinner-overlay">
+    <mat-spinner diameter="25" color="primary"></mat-spinner>
+</div>
 
-<div class="container mt-5">
-  <h2 class="mb-4 text-center">Select Products</h2>
-  <div>
-    <div class="product-list">
-        @for (product of products; track $index) {
-          <a [routerLink]="['/page-products', product.id]" class="text-decoration-none text-dark">
-              <app-product-card [product]="product"/>
-          </a>
-        }
+<div *ngIf="!loading && products.length === 0" class="text-muted">
+  Aucun produit disponible.
+</div>
+
+<div *ngIf="!loading && products.length > 0">
+  <div class="container mt-5">
+    <h2 class="text-center">Des parfums pour vous</h2>
+    <div>
+      <div class="product-list">
+          @for (product of products; track $index) {
+            <a [routerLink]="['/page-products', product.id]" class="text-decoration-none text-dark">
+                <app-product-card [product]="product"/>
+            </a>
+          }
+      </div>
     </div>
   </div>
 </div>
+
+

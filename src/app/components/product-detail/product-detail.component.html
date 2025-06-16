@@ -1,19 +1,120 @@
-@if (product){
-  <div class="container mt-5">
-    <h2 class="mb-3">{{ product.name }}</h2>
-    @if (product.imageUrl){
-      <img [src]="product.imageUrl" class="img-fluid mb-3" alt="{{ product.name }}">
-    }
-    <div>
-      <p><strong>Description :</strong> {{ product.description }}</p>
-      <p><strong>Prix :</strong> {{ product.price | currency:'EUR' }}</p>
-      <button class="btn btn-secondary mt-3" (click)="goBack()">Retour</button>
+<div *ngIf="product">
+  <div class="categorie">
+    <p>Électronique / Ordinateurs / Ordinateurs portables / Acheter des ordinateurs portables par type / <strong>{{ product.name }}</strong></p>
+  </div>
+  <div class="container">
+    <!-- Partie image principale et miniatures -->
+    <div class="gallery-container">
+        <div class="main-image">
+          <img [src]="selectedImage" alt="Selected product" />
+        </div>
+
+        <div class="thumbnail-list">
+          <img
+            *ngFor="let img of images"
+            [src]="img"
+            [class.active]="img === selectedImage"
+            (click)="selectImage(img)"
+            alt="Product variation"
+          />
+        </div>
+    </div>
+
+    <!-- Partie droite : informations produit -->
+    <div class="product-info">
+      <section class="caracteristique-infos">
+          <div class="cat-text">
+            <h2 class="">{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <div class="rating">
+              <div class="star">
+                  <mat-icon 
+                  *ngFor="let star of [].constructor(5); let i = index" 
+                  [style.color]="getStarColor(i)">
+                  star
+                  </mat-icon>
+              </div>
+              <div class="rating-count">
+                  <span>{{ likeCount }}</span>
+              </div>
+          </div>
+          </div>
+      </section>
+
+      <section class="caracteristique-prix">
+          <div class="prix">
+            <h2><strong>Prix :</strong> {{ product.price | currency:'USD' }}</h2>
+            <!-- <h2><strong>Prix :</strong> {{ product.price | currency:'EUR' }}</h2> -->
+            <!-- <h2><strong>Prix :</strong> {{ product.price | number:'1.2-2' }} XAF</h2> -->
+          </div>
+      </section>
+
+      <!-- Couleurs disponibles -->
+      <section class="caracteristique-colors">
+          <h3>Choose a Color</h3>
+          <div class="colors">
+            <div
+              class="color-circle"
+              *ngFor="let color of colors; let i = index"
+              [ngStyle]="{ 'background-color': color }"
+              [class.selected]="i === selectedColorIndex"
+              (click)="selectColor(i)"
+            ></div>
+          </div>
+      </section>
+
+      <!-- Like / quantité -->
+      <section class="quantity-stock">
+          <div class="quantity-control">
+            <button (click)="decreaseQuantity()">−</button>
+            <span>{{ quantity }}</span>
+            <button (click)="increaseQuantity()">+</button>
+          </div>
+          <div class="stock-info">
+            <p>Only <span class="stock">{{ stock }}</span> Items Left!</p>
+            <small class="stock-info-text-botom">Don't miss it</small>
+          </div>
+      </section>
+
+      
+
+      <!-- Boutons d'action -->
+      <div class="action-buttons">
+        <button class="buy" (click)="buyNow()"><p>Buy Now</p></button>
+        <button class="cart" (click)="addToCart()"><p>Add to Cart</p></button>
+      </div>
+
+      <div class="delivery-box">
+        <div class="delivery-item">
+          <span class="icon">
+            <mat-icon color="primary">local_shipping</mat-icon>
+          </span>
+          <div class="delivery-text">
+            <p class="title">Free Delivery</p>
+            <p>
+              <a href="#">Enter your Postal code for Delivery Availability</a>
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="delivery-item">
+          <span class="icon">
+            <mat-icon color="accent">calendar_today</mat-icon>
+          </span>
+          <div class="delivery-text">
+            <p class="title">Return Delivery</p>
+            <p>
+              Free 30days Delivery Returns. <a href="#">Details</a>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-}
-@if (!product) {
-  <div >
-    <p>Chargement du produit...</p>
-  </div>
-}
+</div>
 
+<ng-template #loading>
+  <p>Chargement du produit...</p>
+</ng-template>

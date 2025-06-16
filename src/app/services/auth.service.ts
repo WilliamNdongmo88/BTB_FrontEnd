@@ -131,6 +131,7 @@ export class AuthService {
 			tap((result: any) => {
 				console.log('result :=>', result);
 				localStorage.setItem('token', result['token']);
+				localStorage.setItem('refreshToken', result['refresh']);
 				const user = Object.assign(new User(), result['user']);
 				this.user.set(user);
 				console.log('user :=>', user);
@@ -158,18 +159,74 @@ export class AuthService {
 		)
 	}
 
-    loginWithGoogle(googleIdToken: string) {
+	refreshToken(): Observable<any> {
+		console.log('Credentials Sending:', {refresh:localStorage.getItem('refreshToken')});
+		return this.http.post(this.apiUrl+'refresh-token', {refresh:localStorage.getItem('refreshToken')})
+		.pipe(
+			tap((result: any) => {
+				console.log('[AuthService] Nouveau token reçu:', result);
+				localStorage.removeItem('token');
+				localStorage.setItem('token', result['token']);
+			}),
+			catchError(err => {
+				console.error('[AuthService] Erreur de refreshToken:', err);
+				return throwError(() => err);
+			})
+		);
+	}
+
+    // loginWithGoogle(googleIdToken: string) {
+	// 	this.isUserLogin = false;
+	// 	this.isUserGoogle = true;
+	// 	this.http.post(this.apiUrl+'auth/google', { idToken: googleIdToken }).subscribe({
+	// 		next: (res) => {
+	// 			// data du backend
+	// 			const authData = res as any;
+	// 			console.log('[Login] data du backend :', authData);
+				
+	// 			// Stocke le token
+	// 			localStorage.setItem('token', authData.token);
+	// 			localStorage.setItem('refreshToken', authData.refresh);
+	// 			console.log('[Login] Token stocké:', authData.token);
+
+	// 			// Définis l'utilisateur
+	// 			const userObj = {
+	// 			name: authData.user.name,
+	// 			email: authData.user.email,
+	// 			actif: authData.user.actif,
+	// 			};
+	// 			this.user.set(userObj);
+
+	// 			// ATTENDS un tick pour être sûr que localStorage est dispo
+	// 			// setTimeout(() => {
+	// 			//   console.log('[Login] Navigation après stockage');
+	// 			//   this.router.navigate(['/home']);
+	// 			// }, 1000);
+	// 			Promise.resolve().then(() => {
+	// 				console.log('[Login] Navigation après Promise.resolve()');
+	// 				this.router.navigate(['/home']);
+	// 			});
+	// 		},
+			
+	// 		error: (err) => {
+	// 			console.error('Erreur d\'authentification :', err);
+	// 			this.user.set(null);
+	// 		}
+	// 		});
+    // }
+
+	loginWithGoogle(googleIdToken: string): Observable<any> {
 		this.isUserLogin = false;
 		this.isUserGoogle = true;
-		this.http.post(this.apiUrl+'auth/google', { idToken: googleIdToken })
-			.subscribe({
-			next: (res) => {
-				// data du backend
+		return this.http.post(this.apiUrl+'auth/google', { idToken: googleIdToken }).pipe(
+        tap((res) =>{
+			// data du backend
 				const authData = res as any;
 				console.log('[Login] data du backend :', authData);
 				
 				// Stocke le token
 				localStorage.setItem('token', authData.token);
+				localStorage.setItem('refreshToken', authData.refresh);
 				console.log('[Login] Token stocké:', authData.token);
 
 				// Définis l'utilisateur
@@ -179,23 +236,15 @@ export class AuthService {
 				actif: authData.user.actif,
 				};
 				this.user.set(userObj);
-
-				// ATTENDS un tick pour être sûr que localStorage est dispo
-				// setTimeout(() => {
-				//   console.log('[Login] Navigation après stockage');
-				//   this.router.navigate(['/home']);
-				// }, 1000);
-				Promise.resolve().then(() => {
-					console.log('[Login] Navigation après Promise.resolve()');
-					this.router.navigate(['/home']);
-				});
 			},
-			
-			error: (err) => {
-				console.error('Erreur d\'authentification :', err);
-				this.user.set(null);
-			}
-			});
+		),
+        map((result: any) => { return this.isUserGoogle; }),
+		catchError((error) => {
+			console.error('Erreur d\'authentification :', error);
+			this.user.set(null);
+			return of(null); // ou of(false), selon la gestion côté appelant
+		})
+      );      
     }
 
 	setToken(token: string) {
@@ -241,23 +290,22 @@ export class AuthService {
       return !!token;
     }
 
-    logout(): Observable<User | null | undefined> {
-		
+    logout(): Observable<Boolean | null | undefined> {
 		return this.http.post(this.apiUrl+'deconnexion',  {}).pipe(
-        tap(() =>{
-			console.log('Déconnexion réussie')
-			if (this.isUserGoogle) {
-				localStorage.removeItem('token');
-				this.router.navigate(['/login']);
-			} else if (this.isUserLogin) {
-				localStorage.removeItem('token');
-				this.user.set(null);
-				this.router.navigate(['/connexion']);
-			}
+        tap((res) =>{
+			console.log('Déconnexion réussie: ', res)
+			// if (this.isUserGoogle) {
+			// 	localStorage.removeItem('token');
+			// 	localStorage.removeItem('refreshToken');
+			// 	this.router.navigate(['/login']);
+			// } else if (this.isUserLogin) {
+			// 	localStorage.removeItem('token');
+			// 	localStorage.removeItem('refreshToken');
+			// 	this.user.set(null);
+			// 	this.router.navigate(['/connexion']);
+			// }
 		} ),
-        map((result: any) => { return this.user(); }),
-      );
-		      
-		
+        map((result: any) => { return this.isUserGoogle; }),
+      );      
     }
 }
