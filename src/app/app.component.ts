@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -20,19 +20,26 @@ import { CommonModule } from '@angular/common';
 export class AppComponent implements OnInit{
     showMenu = false;
 	  loading = false;
+    isMobile = false;
    	private router = inject(Router);
     authService = inject(AuthService);
 
 
-    get isMobile(): boolean {
-      return window.innerWidth < 768;
-    }
+    // get isMobile(): boolean {
+    //   return window.innerWidth < 768;
+    // }
 
     toggleMenu() {
       this.showMenu = !this.showMenu;
     }
 
+    @HostListener('window:resize')
+    onResize() {
+      this.isMobile = window.innerWidth < 768;
+    }
+
     ngOnInit(): void {
+      this.isMobile = window.innerWidth < 768;
       const token = localStorage.getItem('token');
       if (token) {
         //this.authService.setToken(token); // Restaurer le token  en mémoire 
@@ -66,10 +73,6 @@ export class AppComponent implements OnInit{
               }
             });
       //console.log('[app.component] isLoggedIn :: ', this.authService.isLoggedIn());
-    }
-
-    onback(){
-      this.navigateHome();
     }
 
     navigateToLogin() {

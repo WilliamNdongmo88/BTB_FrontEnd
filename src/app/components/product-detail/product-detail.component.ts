@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail',
@@ -35,7 +37,8 @@ export class ProductDetailComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private authService: AuthService
   ) {}
 
   selectImage(image: string) {
@@ -84,13 +87,35 @@ export class ProductDetailComponent {
         error: (err) => {
           this.errorMessage = "Erreur de chargement du produit.";
           this.loading = false;
-          console.error(err);
+          const isTokenExpired = err.status === 400 && err.error?.message?.includes('token a expiré');
+          
+                  if (isTokenExpired) {
+                    console.log('[ProductService] Token expiré, tentative de refresh...');
+          
+                    this.authService.refreshToken()
+                    .pipe(
+                      switchMap(() => this.productService.getAllProducts()), // Re-lance la requête après refresh
+                      catchError(err => {
+                        console.error('[ProductService] Refresh échoué:', err);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('refreshToken');
+                        this.navigateToLogin();
+                        return throwError(() => err);
+                      })
+                    );
+                  }else if(err.status === 401){
+                    localStorage.removeItem('token'); 
+                    this.navigateToLogin();
+                  }
         }
       });
     } else {
       this.errorMessage = "ID de produit invalide.";
       this.loading = false;
     }
+  }
+  navigateToLogin() {
+    this.router.navigate(['login']);
   }
 
     goBack(): void {

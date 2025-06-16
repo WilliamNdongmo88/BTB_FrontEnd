@@ -1,0 +1,48 @@
+<mat-card class="product-form">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+    <h2>Créer un produit</h2>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Prix (€)</mat-label>
+        <input matInput type="number" formControlName="price" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" formControlName="stock" />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="image-upload">
+      <input type="file" (change)="onImageSelected($event)" />
+      @if (imagePreview) {
+        <div>
+            <img [src]="imagePreview" alt="Prévisualisation" />
+        </div>
+      }
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="productForm.invalid">
+      Créer le produit
+    </button>
+  </form>
+</mat-card>

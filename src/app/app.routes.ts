@@ -9,6 +9,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ActiveCodeComponent } from './pages/code-activation/active-code.component';
 import { NewPasswordComponent } from './pages/new-password/new-password.component';
 import { PasswordComponent } from './pages/password/password.component';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 
 export const routes: Routes = [
     {
@@ -28,4 +29,5 @@ export const routes: Routes = [
     { path: 'active-code', component: ActiveCodeComponent },
     { path: 'new-password', component: NewPasswordComponent },
     { path: 'password', component: PasswordComponent },
+    { path: 'admin', component: DashboardComponent }
 ];

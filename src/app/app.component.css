@@ -33,6 +33,7 @@ a {
 .navbar-left {
   display: flex;
   align-items: center;
+  display: flow;
 }
 
 .navbar-center-left {
@@ -157,32 +158,11 @@ a {
   cursor: pointer;
 }
 
-/* TABLET */
-@media (max-width: 1023px) {
-  .brand {
-    font-size: 1.2rem;
-  }
-
-  .navbar-center-left a {
-    margin: 0 5px;
-  }
-
-  .navbar-center-right input {
-    max-width: 120px;
-  }
-}
-
-/* MOBILE */
-@media (max-width: 767px) {
+/* Responsive navbar */
+@media screen and (max-width: 768px) {
   .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .navbar-left, .navbar-right {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px;
   }
 
   .navbar-toggle {
@@ -191,24 +171,117 @@ a {
 
   .navbar-center-left {
     display: none;
-    flex-direction: column;
     width: 100%;
+    flex-direction: column;
+    margin-top: 10px;
   }
 
   .navbar-center-left.show {
     display: flex;
   }
 
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
   .navbar-center-right {
     display: none;
   }
 
-  .navbar-center-left a {
-    padding: 10px;
-    border-top: 1px solid #eee;
+  .navbar-right {
+    margin-top: 10px;
+  }
+}
+
+/* @media screen and (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-left {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    display: flow;
   }
 
   .brand {
-    font-size: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    height: 25px;
+  }
+
+  .navbar-right {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .navbar-right a span {
+    display: none;
+  }
+} */
+
+@media screen and (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    padding: 5px 10px;
+  }
+
+  .navbar-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .brand {
+    margin-left: auto;
+    font-size: 1.3rem;
+  }
+
+  .logo {
+    height: 25px;
+  }
+
+  .navbar-mobile-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .navbar-toggle,
+  .navbar-center-right,
+  .navbar-right {
+    display: contents;
+    align-items: center;
+    gap: 10px;
+    
+  }
+
+  .navbar-center-right input {
+    max-width: 80px;
+    font-size: 0.8rem;
+  }
+
+  .navbar-right span {
+    display: none;
+  }
+
+  .navbar-center-left {
+    display: none; /* On masque les liens classiques */
   }
 }

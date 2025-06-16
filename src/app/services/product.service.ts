@@ -4,6 +4,7 @@ import { Product } from '../models/product.model';
 import { catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { InterfaceProduct } from '../interface/product.interface';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ProductService {
 
 	private apiUrl = 'http://localhost:8050/api/product';
 
-  	constructor(private http: HttpClient, private authService: AuthService) {}
+  	constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
 
 	// getAllProducts(): Observable<any> {
 	// 	const token = localStorage.getItem('token');
@@ -68,10 +69,13 @@ export class ProductService {
 							console.error('[ProductService] Refresh échoué:', err);
 							localStorage.removeItem('token');
 							localStorage.removeItem('refreshToken');
-							// Redirige vers login ici si besoin
+							this.navigateToLogin();
 							return throwError(() => err);
 						})
 					);
+				}else if(error.status === 401){
+					localStorage.removeItem('token'); 
+					this.navigateToLogin();
 				}
 
 				return throwError(() => error);
@@ -87,5 +91,7 @@ export class ProductService {
 			map(productJson => Product.fromJson(productJson))
 		);
 	}
-
+    navigateToLogin() {
+      this.router.navigate(['login']);
+    }
 }

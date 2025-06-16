@@ -213,10 +213,15 @@
   justify-content: flex-start;
 }
 
+.stock-info p{
+  color: #555;
+}
+
 .stock-info-text-botom{
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  color: #555;
   margin-top: -18px;
 }
 
@@ -456,6 +461,10 @@
     padding: 0.5rem;
     font-size: 0.9rem;
     height: 35px;
+  }
+
+  .delivery-text{
+    margin-top: -25px;
   }
 
   .delivery-item {

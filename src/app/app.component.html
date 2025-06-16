@@ -1,50 +1,52 @@
 @if(authService.isLoggedIn() && authService.user()){
-	<nav class="navbar">
-		<div class="navbar-left">
-			<a [routerLink]="['/home']" class="navbar-link">
-				<img src="img/btb.jpg" alt="Logo" class="logo" />
-				<span class="brand">BTB-Shop</span>
-			</a>
-		</div>
+<nav class="navbar">
+  <div class="navbar-left">
+    <a [routerLink]="['/home']" class="navbar-link">
+      <img src="img/btb.jpg" alt="Logo" class="logo" />
+      <span class="brand">BTB-Shop</span>
+    </a>
+  </div>
 
+  <!-- <div class="navbar-toggle" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </div> -->
 
-		<div class="navbar-toggle" (click)="toggleMenu()">
-			<mat-icon>menu</mat-icon>
-		</div>
+  <div class="navbar-center-left" [ngClass]="{ 'show': showMenu }">
+    <div class="nav-links">
+      <a routerLink="/categories">
+        Catégories <mat-icon class="matIcon">expand_more</mat-icon>
+      </a>
+      <a routerLink="/deals">Offres</a>
+      <a routerLink="/whats-new">Nouveautés</a>
+      <a routerLink="/delivery">Livraison</a>
+    </div>
+  </div>
 
-		<div class="navbar-center-left" [ngClass]="{ 'show': showMenu }">
-			<div class="nav-links">
-				<a routerLink="/categories">
-					Catégories <mat-icon class="matIcon">expand_more</mat-icon>
-				</a>
-				<a routerLink="/deals">Offres</a>
-				<a routerLink="/whats-new">Nouveautés</a>
-				<a routerLink="/delivery">Livraison</a>
-			</div>
-		</div>
+  <div class="navbar-center-right" *ngIf="!isMobile">
+    <input type="text" placeholder="Search Product" />
+    <mat-icon class="search-icon">search</mat-icon>
+  </div>
 
-		<div class="navbar-center-right" *ngIf="!isMobile">
-			<input type="text" placeholder="Search Product" />
-			<mat-icon class="search-icon">search</mat-icon>
-		</div>
+  <div class="navbar-mobile-icons">
+    <div class="navbar-toggle" (click)="toggleMenu()">
+      <mat-icon>menu</mat-icon>
+    </div>
 
-		<div class="navbar-right">
-			<a routerLink="/cart"><mat-icon>shopping_cart</mat-icon></a>
-			<a routerLink="/account">
-				<mat-icon>person</mat-icon>
-				<span *ngIf="!isMobile">{{ authService.user()?.name | slice: 0:9 }}</span>
-			</a>
-
-			<button mat-icon-button (click)="logout()" [disabled]="loading">
-			@if (!loading) {
-				<mat-icon>logout</mat-icon>
-			} @else {
-				<mat-spinner diameter="25"></mat-spinner>
-			}
-			</button>
-		</div>
-	</nav>
+    <div class="navbar-right">
+      <a routerLink="/cart"><mat-icon>shopping_cart</mat-icon></a>
+      <a routerLink="/account">
+        <mat-icon>person</mat-icon>
+      </a>
+      <button mat-icon-button (click)="logout()" [disabled]="loading">
+        @if (!loading) {
+          <mat-icon>logout</mat-icon>
+        } @else {
+          <mat-spinner diameter="25"></mat-spinner>
+        }
+      </button>
+    </div>
+  </div>
+</nav>
 }
 
-<router-outlet /> 
-
+<router-outlet />
