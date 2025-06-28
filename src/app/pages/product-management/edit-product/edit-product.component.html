@@ -1,0 +1,135 @@
+<div class="add-product-page">
+  <div class="page-header">
+    <h1>Edit Product <span *ngIf="product?.name"> - {{ product?.name }}</span></h1>
+    <div class="header-actions">
+      <button class="btn primary" (click)="updateProduct()">Update Product</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-message">
+    <p>Loading product details...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="content-wrapper">
+    <div class="section-nav-panel">
+      <h2>Product Data</h2>
+      <ul>
+        <li *ngFor="let section of productSections"
+            [class.active]="currentSection === section.key"
+            (click)="selectSection(section.key)">
+          {{ section.label }} <i class="fas fa-chevron-right"></i>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section-content-panel">
+      <div *ngIf="currentSection === 'basicInformation'" class="section-card">
+        <h2>Basic Information</h2>
+        <form [formGroup]="basicInformationForm">
+          <div class="form-group">
+            <label for="productName">Product name</label>
+            <input id="productName" type="text" formControlName="name" />
+            <div *ngIf="basicInformationForm.get('name')?.invalid && basicInformationForm.get('name')?.touched" class="error-message">
+              Product name is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productDescription">Product Description</label>
+            <textarea id="productDescription" formControlName="description" rows="5"></textarea>
+            <button class="btn auto-generate-btn">Auto-generate Description</button>
+            <div *ngIf="basicInformationForm.get('description')?.invalid && basicInformationForm.get('description')?.touched" class="error-message">
+              Description is too long (max 1000 characters).
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productPrice">Price</label>
+            <input id="productPrice" type="number" formControlName="price" />
+            <div *ngIf="basicInformationForm.get('price')?.invalid && basicInformationForm.get('price')?.touched" class="error-message">
+                Price is required and must be a positive number.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="productBrand">Product Brand</label>
+            <input id="productBrand" type="text" formControlName="brand" />
+          </div>
+
+          <div class="form-group">
+            <label>Category</label>
+            <div class="category-tags">
+              <span *ngFor="let cat of availableCategories"
+                    class="tag"
+                    [class.selected]="isCategorySelected(cat)"
+                    (click)="toggleCategory(cat)">
+                {{ cat }}
+              </span>
+            </div>
+            <div *ngIf="selectedCategories.length === 0 && basicInformationForm.touched" class="error-message">
+                At least one category is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Product Image</label>
+            <p class="quality-check">Check Image Quality <i class="fas fa-info-circle"></i></p>
+            <div class="image-upload-area">
+              <label for="productImageUpload" class="upload-box">
+                <input type="file" id="productImageUpload" accept="image/*" (change)="onProductImageSelected($event)" style="display: none;" />
+                <i class="fas fa-plus"></i>
+                <span>Change Image</span>
+              </label>
+              <div *ngIf="productImageBase64" class="image-preview">
+                <img [src]="productImageBase64" alt="Product Image Preview" />
+              </div>
+              <div *ngIf="!productImageBase64 && basicInformationForm.touched" class="error-message">
+                Product image is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Product Gallery</label>
+            <p class="quality-check">Check Image Quality <i class="fas fa-info-circle"></i></p>
+            <div class="image-upload-area gallery-area">
+              <label for="productGalleryUpload" class="upload-box">
+                <input type="file" id="productGalleryUpload" accept="image/*" multiple (change)="onProductGallerySelected($event)" style="display: none;" />
+                <i class="fas fa-plus"></i>
+                <span>Add More Images</span>
+              </label>
+              <div *ngFor="let preview of productGalleryBase64; let i = index" class="image-preview gallery-item">
+                <img [src]="preview" alt="Gallery Image Preview {{i+1}}" />
+                <button class="remove-image-btn" (click)="removeGalleryImage(i)">
+                  <i class="fas fa-times-circle"></i>
+                </button>
+              </div>
+            </div>
+            <p class="image-resolution-hint">Image resolution too low!</p>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="currentSection === 'generalInformation'" class="section-card">
+        <h2>General Information</h2>
+        <p>Contenu pour la section "General Information" (à implémenter).</p>
+      </div>
+      <div *ngIf="currentSection === 'sizeGuide'" class="section-card">
+        <h2>Size Guide</h2>
+        <p>Contenu pour la section "Size Guide" (à implémenter).</p>
+      </div>
+      <div *ngIf="currentSection === 'inventory'" class="section-card">
+        <h2>Inventory</h2>
+        <p>Contenu pour la section "Inventory" (à implémenter).</p>
+      </div>
+      <div *ngIf="currentSection === 'shipping'" class="section-card">
+        <h2>Shipping</h2>
+        <p>Contenu pour la section "Shipping" (à implémenter).</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class ProductListComponent implements OnInit{
   loading: boolean = false;
+  errorMessage: string = '';
 
   products: Product[] = [];
 
@@ -41,15 +42,27 @@ export class ProductListComponent implements OnInit{
 
     this.productService.getAllProducts().subscribe({
       next: (data: Product[]) => {
-        console.log('data : ', data);
+        console.log('[ProductListComponent] data :: ', data[0]);
         this.products = data;
+        console.log('this.products : ', this.products);
         this.loading = false;
       },
       error: (err) => {
-        console.error('Erreur lors du chargement des produits', err);
+        console.error('Erreur lors du chargement des produits', err.error);
+        this.errorMessage  = err.error;
+        const isTokenExpired = err.status === 400 && err.error?.message?.includes('Token invalid ou inconnu');
+        if (isTokenExpired){
+          localStorage.removeItem('token');
+		      localStorage.removeItem('refreshToken');
+          this.navigateToLogin();
+        }
         this.loading = false;
       }
     });
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['login']);
   }
 
 }

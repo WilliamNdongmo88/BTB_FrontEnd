@@ -1,0 +1,58 @@
+.app-footer {
+  background-color: #f0f2f5; /* Couleur de fond légère */
+  color: #6c757d; /* Couleur de texte plus foncée */
+  padding: 10px 60px;
+  border-top: 1px solid #e9ecef; /* Petite bordure supérieure */
+  text-align: center;
+  font-size: 0.9em;
+  width: 100%; /* S'assurer qu'il prend toute la largeur */
+  box-sizing: border-box; /* Inclure le padding dans la largeur */
+  flex-shrink: 0; /* Empêche le footer de rétrécir si le contenu est trop grand */
+
+  .footer-content {
+    max-width: 1200px; /* Limiter la largeur du contenu pour une meilleure lisibilité */
+    margin: 0 auto; /* Centrer le contenu */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centrer verticalement */
+
+    p {
+      margin-bottom: 15px;
+      line-height: 1.5;
+      margin-top: 5px;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 15px; /* Espacement entre les liens */
+      flex-wrap: wrap; /* Permettre aux liens de passer à la ligne sur de petits écrans */
+      justify-content: center;
+    }
+
+    .footer-link {
+      color: #007bff; /* Couleur des liens */
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+      margin-bottom: 15px;
+      margin-top: 5px;
+
+      &:hover {
+        color: #0056b3; /* Changement de couleur au survol */
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // Styles responsives si nécessaire
+  @media (min-width: 768px) {
+    .footer-content {
+      flex-direction: row; /* En ligne sur les grands écrans */
+      justify-content: space-between; /* Espacer les éléments */
+    }
+
+    p {
+      margin-bottom: 0; /* Pas de marge en bas quand c'est en ligne */
+    }
+  }
+}

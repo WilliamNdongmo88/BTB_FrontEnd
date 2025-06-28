@@ -1,0 +1,25 @@
+.app-container {
+  display: flex;
+  min-height: 100vh; /* Assure que le conteneur prend toute la hauteur */
+  background-color: #f0f2f5;
+}
+
+// .content-sidebar{
+//   margin-top: 80px;
+// }
+
+// .content-header{
+//   width: 100%;
+// }
+
+.main-content-wrapper {
+  flex-grow: 1; /* Prend l'espace restant après la sidebar */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-router-outlet {
+  flex-grow: 1;
+  padding: 30px; /* Padding autour du contenu principal */
+  background-color: #f0f2f5;
+}

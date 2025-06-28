@@ -1,0 +1,92 @@
+<div class="products-page">
+  <div class="page-header">
+    <h1>All Products</h1>
+    <div class="header-actions">
+      <button
+        class="btn btn-delete"
+        [disabled]="numberOfSelectedProducts === 0"
+        (click)="deleteSelectedProducts()"
+        *ngIf="numberOfSelectedProducts > 0"
+      >
+        Delete ({{ numberOfSelectedProducts }}) Selected
+      </button>
+      <button class="btn primary" (click)="refreshProducts()">Refresh Products</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="custom-spinner spinner-overlay">
+      <mat-spinner diameter="50" color="warn"></mat-spinner>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button class="btn secondary" (click)="refreshProducts()">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error && products.length === 0" class="no-products-message">
+    <p>No products found. Start by adding new products!</p>
+  </div>
+
+  <div *ngIf="!isLoading && !error && products.length > 0" class="products-table-container">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th class="checkbox-header">
+            <input
+              type="checkbox"
+              [(ngModel)]="selectAll"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of paginatedProducts">
+          <td>
+            <input
+              type="checkbox"
+              [checked]="isProductSelected(product.id)"
+              (change)="toggleProductSelection(product.id)"
+            />
+          </td>
+          <td>
+            <div class="product-image-cell">
+              <img [src]="product.mainImage.content" [alt]="product.name" />
+            </div>
+          </td>
+          <td>{{ product.name }}</td>
+          <td class="product-description-cell">{{ product.description }}</td>
+          <td>${{ product.price | number:'1.2-2' }}</td>
+          <td class="actions-cell">
+            <button class="btn btn-edit" (click)="editProduct(product.id)">Edit</button>
+            <button class="btn btn-delete" (click)="deleteProduct(product.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination-controls" *ngIf="totalPages > 1">
+      <button class="btn btn-pagination" (click)="previousPage()" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span class="page-numbers">
+        <button
+          *ngFor="let page of pagesArray"
+          class="btn btn-pagination-number"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </span>
+      <button class="btn btn-pagination" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </div>
+</div>

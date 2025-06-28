@@ -1,31 +1,28 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-product-card',
-  imports: [MatIconModule, MatButtonModule, CommonModule],
+  imports: [MatIconModule, MatButtonModule, CommonModule, MatProgressSpinnerModule],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.css'
+  styleUrl: './product-card.component.scss'
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit{
 
+  isLoading = false;
   isLoved = false;
   likeCount = 26;
   liked = false;
 
   @Input() product!: Product;
 
-  //   product = {
-  //   title: 'AirPods Max',
-  //   description: 'A perfect balance of high-fidelity audio',
-  //   price: 559.00,
-  //   rating: 5,
-  //   reviews: 121,
-  //   imageUrl: 'assets/images/airpods-max.png'
-  // };
+  ngOnInit(): void {
+    console.log("[ProductCardComponent] product :: ", this.product);
+  }
 
   getStarColor(index: number): string {
     const level = Math.floor(this.likeCount / 25); // 0–4
@@ -56,7 +53,5 @@ export class ProductCardComponent {
     console.log('Ajout dans le panier');
     event.stopPropagation();     // Empêche la propagation du clic
     event.preventDefault();      // Empêche le lien de s’activer
-
-    // ... ta logique d’ajout au panier
   }
 }

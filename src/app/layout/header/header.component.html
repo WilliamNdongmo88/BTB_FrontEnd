@@ -1,0 +1,33 @@
+<!-- src/app/layout/header/header.component.html -->
+<header class="app-header">
+  <!-- <div class="logo">FOCAL</div> -->
+  <div class="search-bar">
+    <input type="text" placeholder="Search for Products" />
+    <button><mat-icon>search</mat-icon> Search</button> <!-- Mat-icon pour la recherche -->
+  </div>
+  <div class="user-info">
+    <mat-icon class="icon-notification">notifications</mat-icon>
+
+    <div class="user-dropdown-container">
+      <div class="user-avatar-name" *ngIf="currentUser" (click)="toggleDropdown()">
+        <div class="avatar-wrapper">
+          <img src="img/btb.jpg" alt="User Avatar" class="user-avatar" />
+          <div class="online-indicator"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{ currentUser.name }}</span>
+          <span class="user-email">{{ currentUser.email }}</span>
+        </div>
+        <mat-icon class="dropdown-icon">{{ showDropdown ? 'expand_less' : 'expand_more' }}</mat-icon>
+      </div>
+
+      <div (click)="closeDropdown()" *ngIf="showDropdown" class="dropdown-menu">
+        <ul>
+          <li><a [routerLink]="['/profile']" (click)="profilHandle()">Profil</a></li>
+          <li><a [routerLink]="['/home']" (click)="navigatToHome()">Retour à l'accueil</a></li>
+          <li><a (click)="deconnexion()">Déconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

@@ -37,6 +37,7 @@ import { Route, Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  
   	private http = inject(HttpClient);
 	private apiUrl = 'http://localhost:8050/api/'; 
 	private authToken = new BehaviorSubject<string | null>(null);//Pour suivre le token dans tte l'appli
@@ -44,6 +45,7 @@ export class AuthService {
     userGoogle = signal<User | undefined| null>(undefined);
 	isUserGoogle: Boolean = false;
 	isUserLogin: Boolean = false;
+	isDashboard = signal(false);
 	userEmail: String = '';
   
   	constructor(private router: Router){}
@@ -143,6 +145,7 @@ export class AuthService {
 	}
     
 	connexion(credentials: LoginCredentials): Observable<User | null | undefined> {
+		this.isDashboard.set(false);
 		this.isUserLogin = true;
 		this.isUserGoogle = false;
 		console.log('Credentials Sending:', credentials);
@@ -175,47 +178,8 @@ export class AuthService {
 		);
 	}
 
-    // loginWithGoogle(googleIdToken: string) {
-	// 	this.isUserLogin = false;
-	// 	this.isUserGoogle = true;
-	// 	this.http.post(this.apiUrl+'auth/google', { idToken: googleIdToken }).subscribe({
-	// 		next: (res) => {
-	// 			// data du backend
-	// 			const authData = res as any;
-	// 			console.log('[Login] data du backend :', authData);
-				
-	// 			// Stocke le token
-	// 			localStorage.setItem('token', authData.token);
-	// 			localStorage.setItem('refreshToken', authData.refresh);
-	// 			console.log('[Login] Token stocké:', authData.token);
-
-	// 			// Définis l'utilisateur
-	// 			const userObj = {
-	// 			name: authData.user.name,
-	// 			email: authData.user.email,
-	// 			actif: authData.user.actif,
-	// 			};
-	// 			this.user.set(userObj);
-
-	// 			// ATTENDS un tick pour être sûr que localStorage est dispo
-	// 			// setTimeout(() => {
-	// 			//   console.log('[Login] Navigation après stockage');
-	// 			//   this.router.navigate(['/home']);
-	// 			// }, 1000);
-	// 			Promise.resolve().then(() => {
-	// 				console.log('[Login] Navigation après Promise.resolve()');
-	// 				this.router.navigate(['/home']);
-	// 			});
-	// 		},
-			
-	// 		error: (err) => {
-	// 			console.error('Erreur d\'authentification :', err);
-	// 			this.user.set(null);
-	// 		}
-	// 		});
-    // }
-
 	loginWithGoogle(googleIdToken: string): Observable<any> {
+		this.setIsDashboard(false);
 		this.isUserLogin = false;
 		this.isUserGoogle = true;
 		return this.http.post(this.apiUrl+'auth/google', { idToken: googleIdToken }).pipe(
@@ -234,6 +198,7 @@ export class AuthService {
 				name: authData.user.name,
 				email: authData.user.email,
 				actif: authData.user.actif,
+				role: authData.user.role.libelle,
 				};
 				this.user.set(userObj);
 			},
@@ -263,7 +228,8 @@ export class AuthService {
 		  const newLocal = {
 			  name: payload.nom,
 			  email: payload.sub,
-			  actif: true
+			  actif: true,
+			  role: payload.role
 		  };
 		  this.user.set(newLocal);
 		  console.log('[AuthService] this.userGoogle '+  JSON.stringify(this.user()));
@@ -272,13 +238,18 @@ export class AuthService {
       }
     }
 
+	setIsDashboard(value: boolean) {
+		console.log('#####setIsDashboard : ', value)
+		this.isDashboard.set(value);
+	}
+
+	getisDashboard(): boolean {
+		return this.isDashboard();
+	}
+
 	getUser() {
       return this.user(); 
     }
-
-    // getUserGoogle() {
-    //   return this.userGoogle(); 
-    // }
 
     isAuthenticated(): boolean {
       return !!localStorage.getItem('token');

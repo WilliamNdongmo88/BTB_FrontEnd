@@ -1,0 +1,90 @@
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* Assurez-vous qu'il est au-dessus de tout le reste */
+}
+
+.dialog-content {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  transform: scale(0.95); /* Petite animation d'entrée */
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dialog-title {
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.dialog-message {
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+
+  button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    min-width: 120px; /* Pour des boutons de taille similaire */
+
+    &.btn-cancel {
+      background-color: #f0f2f5;
+      color: #6c757d;
+
+      &:hover {
+        background-color: #e9ecef;
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+
+    &.btn-confirm {
+      background-color: #dc3545; /* Rouge pour la suppression */
+      color: white;
+
+      &:hover {
+        background-color: #c82333;
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+}

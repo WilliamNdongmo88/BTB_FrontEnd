@@ -24,11 +24,7 @@ export class ProductDetailComponent {
   router: any;
   colors = ['#F87171', '#9CA3AF', '#A7F3D0', '#F3F4F6', '#60A5FA'];
   selectedImage: string = '';
-  images: string[] = [
-    'img/iphone.png',
-    'img/iphone.png',
-    'img/iphone.png'
-  ];
+  images: string[] = [];
   selectedColorIndex = 0;
 
   quantity = 1;
@@ -75,12 +71,14 @@ export class ProductDetailComponent {
     this.productId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (this.productId) {
-      this.productService.getId(this.productId).subscribe({
+      this.productService.getProductById(this.productId).subscribe({
         next: (prod) => {
           console.log('prodId ', prod);
           this.product = prod;
-          this.images.push(prod.imageUrl);
-          this.selectedImage = prod.imageUrl; 
+          this.selectedImage = prod.mainImage.content
+          for (let i = 0; i < prod.images.length; i++) {
+            this.images.push(prod.images[i].content);
+          }; 
           console.log('this.selectedImage ', this.images);
           this.loading = false;
         },

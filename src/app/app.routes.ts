@@ -10,6 +10,17 @@ import { ActiveCodeComponent } from './pages/code-activation/active-code.compone
 import { NewPasswordComponent } from './pages/new-password/new-password.component';
 import { PasswordComponent } from './pages/password/password.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
+import { AnalyticsComponent } from './pages/analytics/analytics.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
+import { OrdersComponent } from './pages/orders/orders.component';
+import { TransactionsComponent } from './pages/transactions/transactions.component';
+import { CouponsComponent } from './pages/coupons/coupons.component';
+import { CustomerComponent } from './pages/customer/customer.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { AddProductComponent } from './pages/product-management/add-product/add-product.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { EditProductComponent } from './pages/product-management/edit-product/edit-product.component';
 
 export const routes: Routes = [
     {
@@ -29,5 +40,24 @@ export const routes: Routes = [
     { path: 'active-code', component: ActiveCodeComponent },
     { path: 'new-password', component: NewPasswordComponent },
     { path: 'password', component: PasswordComponent },
-    { path: 'admin', component: DashboardComponent }
+    { path: 'admin', component: DashboardComponent },
+    {
+    path: 'admin',
+    component: MainLayoutComponent, // <-- C'est ici que MainLayoutComponent est le parent
+    children: [
+      //{ path: 'admin', redirectTo: 'products/add', pathMatch: 'full' }, // Redirige la racine vers la page d'ajout
+      { path: 'products/add', component: AddProductComponent },
+      { path: 'products', component: ProductsComponent }, // Page liste des produits dans le dashboard
+      { path: 'products/edit/:id', component: EditProductComponent },
+
+      // Ajoutez des routes pour les autres sections
+      { path: 'analytics', component: AnalyticsComponent },
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'orders', component: OrdersComponent },
+      { path: 'transactions', component: TransactionsComponent },
+      { path: 'coupons', component: CouponsComponent },
+      { path: 'customer', component: CustomerComponent },
+      { path: 'settings', component: SettingsComponent },
+    ]
+  },
 ];

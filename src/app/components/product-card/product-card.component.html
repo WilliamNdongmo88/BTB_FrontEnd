@@ -9,21 +9,22 @@
     </mat-icon>
   </div>
 
+  <div class="product-image-wrapper">
+    <img [src]="product.mainImage.content" [alt]="product.name" class="product-main-image" />
+  </div>
 
-  <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
-
+  <div class="product-details">
     <div class="top-row">
         <div>
             <h2 class="title">{{ product.name }}</h2>
         </div>
         <div>
-            <p class="price">${{ product.price.toFixed(2) }}</p>
+            <p class="price">{{ product.price | currency }}</p>
         </div>
     </div>
     <p class="description">
         {{ product.description.length > 80 ? (product.description | slice:0:50) + '…' : product.description }}
     </p>
-
     <div class="rating">
         <div class="star">
             <mat-icon 
@@ -36,9 +37,15 @@
             <span>{{ likeCount }}</span>
         </div>
     </div>
+  </div>
 
+  <div class="product-actions">
     <div class="bottom-row">
       <button class="add-button" (click)="onAddToCart($event)">Add to Cart</button>
     </div>
-  
+  </div>
 </div>
+
+
+      
+      

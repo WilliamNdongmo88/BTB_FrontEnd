@@ -1,0 +1,26 @@
+<aside class="app-sidebar">
+  <div class="logo">BTB</div>
+  <nav>
+    <ul>
+      <li *ngFor="let item of navItems" [routerLinkActive]="['active']">
+        <a [routerLink]="item.link" class="nav-link">
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-avatar-name" *ngIf="currentUser">
+      <div class="avatar-wrapper">
+        <!-- <img [src]="currentUser.avatar" alt="User Avatar" class="user-avatar" /> -->
+         <img src="img/btb.jpg" alt="User Avatar" class="user-avatar" />
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ currentUser.name }}</span>
+        <span class="user-email">{{ currentUser.email }}</span>
+      </div>
+    </div>
+  </div>
+</aside>
