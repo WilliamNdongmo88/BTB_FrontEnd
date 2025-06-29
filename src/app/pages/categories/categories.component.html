@@ -1,1 +1,82 @@
-<p>categories works!</p>
+<div class="add-product-page">
+  <div *ngIf="loading" class="custom-spinner spinner-overlay">
+      <mat-spinner diameter="50" color="warn"></mat-spinner>
+  </div>
+  <div class="page-header">
+    <h1>Nouvelle Catégorie <span class="badge">Simple Catégorie</span></h1>
+    <div class="header-actions">
+      <button class="btn secondary" (click)="reviewForm()">Review Form</button>
+      <button class="btn primary" (click)="publishProduct()">Publish Product</button>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="section-nav-panel">
+      <h2>Type de catégorie</h2>
+      <ul>
+        <li *ngFor="let section of productSections"
+            [class.active]="currentSection === section.key"
+            (click)="selectSection(section.key)">
+          {{ section.label }} <i class="fas fa-chevron-right"></i>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section-content-panel">
+      <div *ngIf="currentSection === 'category'" class="section-card">
+        <h2>Création Catégorie</h2>
+        <form [formGroup]="categoryForm">
+          <div class="form-group">
+            <div class="label-input-cat">
+              <label for="categoryName">Category name</label>
+              <div class="max-width-prod">
+                <input id="categoryName" type="text" formControlName="name" />
+                <div *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" class="error-message">
+                  Category name is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="currentSection === 'subCategory'" class="section-card">
+        <h2>Création Sous Catégorie</h2>
+        <form [formGroup]="subCategoryForm">
+          <div class="form-group">
+            <div class="label-input-cat">
+              <label for="subCategoryName">Name</label>
+              <div class="max-width-prod">
+                <input id="subCategoryName" type="text" formControlName="name" />
+                <div *ngIf="subCategoryForm.get('name')?.invalid && subCategoryForm.get('name')?.touched" class="error-message">
+                  Sub Category name is required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="label-input-subCat">
+              <label for="subCategoryType">Type</label>
+              <div class="max-width-prod">
+                <input id="subCategoryType" type="text" formControlName="type" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div *ngIf="currentSection === 'sizeGuide'" class="section-card">
+        <h2>Size Guide</h2>
+        <p>Contenu pour la section "Size Guide" (à implémenter).</p>
+      </div>
+      <div *ngIf="currentSection === 'inventory'" class="section-card">
+        <h2>Inventory</h2>
+        <p>Contenu pour la section "Inventory" (à implémenter).</p>
+      </div>
+      <div *ngIf="currentSection === 'shipping'" class="section-card">
+        <h2>Shipping</h2>
+        <p>Contenu pour la section "Shipping" (à implémenter).</p>
+      </div> -->
+    </div>
+  </div>
+</div>
