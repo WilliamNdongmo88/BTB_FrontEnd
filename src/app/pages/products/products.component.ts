@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // Importez FormsModule pour ngModel sur les checkboxes
+import { FormsModule } from '@angular/forms';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { DialogService } from '../../services/dialogService';
@@ -19,15 +19,13 @@ export class ProductsComponent implements OnInit {
   isLoading: boolean = true;
   error: string | null = null;
 
-  // --- Pagination Properties ---
   pageSize: number = 10; 
   currentPage: number = 1;
   totalPages: number = 1; 
   paginatedProducts: Product[] = []; 
 
-  // --- Selection Properties ---
-  selectedProductIds: Set<number> = new Set<number>(); // Stocke les IDs des produits sélectionnés
-  selectAll: boolean = false; // Pour la case à cocher "Tout sélectionner"
+  selectedProductIds: Set<number> = new Set<number>(); 
+  selectAll: boolean = false; 
 
   constructor(
     private productService: ProductService,
@@ -42,7 +40,7 @@ export class ProductsComponent implements OnInit {
   loadProducts(): void {
     this.isLoading = true;
     this.error = null;
-    this.selectedProductIds.clear(); // Clear selections on load
+    this.selectedProductIds.clear();
 
     this.productService.getAllProducts().subscribe({
       next: (data) => {
@@ -91,10 +89,9 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  // --- Pagination Logic ---
   updatePagination(): void {
     this.totalPages = Math.ceil(this.products.length / this.pageSize);
-    this.goToPage(this.currentPage); // Assurez-vous d'être sur une page valide
+    this.goToPage(this.currentPage);
   }
 
   goToPage(page: number): void {
@@ -103,7 +100,7 @@ export class ProductsComponent implements OnInit {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
       this.paginatedProducts = this.products.slice(startIndex, endIndex);
-      this.updateSelectAllStatus(); // Mettre à jour le statut du "Tout sélectionner"
+      this.updateSelectAllStatus();
     }
   }
 
@@ -123,7 +120,6 @@ export class ProductsComponent implements OnInit {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  // --- Selection Logic ---
   isProductSelected(productId: number): boolean {
     return this.selectedProductIds.has(productId);
   }
@@ -146,7 +142,6 @@ export class ProductsComponent implements OnInit {
   }
 
   updateSelectAllStatus(): void {
-    // Vérifie si tous les produits de la page actuelle sont sélectionnés
     this.selectAll = this.paginatedProducts.every(product => this.selectedProductIds.has(product.id));
   }
 
@@ -154,7 +149,6 @@ export class ProductsComponent implements OnInit {
     return this.selectedProductIds.size;
   }
 
-  // Exemple d'action sur les produits sélectionnés
   deleteSelectedProducts(): void {
     if (this.selectedProductIds.size === 0) {
       alert('Veuillez sélectionner au moins un produit à supprimer.');
@@ -173,7 +167,7 @@ export class ProductsComponent implements OnInit {
 
         this.productService.deleteMultiple(productIdsToDelete).subscribe({
           next: (message: string) => {
-            alert(message); // 👈 ici, on affiche le "Produits supprimés avec succès"
+            alert(message); 
             this.loadProducts();
           },
           error: (err) => {

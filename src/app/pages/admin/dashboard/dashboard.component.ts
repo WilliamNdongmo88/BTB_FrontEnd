@@ -54,7 +54,6 @@ export class DashboardComponent {
         // if (value !== null) formData.append(key, value);
       });
       console.log('Produit soumis :', this.productForm.value);
-      // Envoie à l'API ici
     }
   }
 }

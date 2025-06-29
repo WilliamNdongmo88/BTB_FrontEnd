@@ -5,7 +5,7 @@
 
 a {
   text-decoration: none;
-  color: inherit; /* Optionnel, pour hériter la couleur du parent */
+  color: inherit; 
 }
 
 .navbar {
@@ -80,14 +80,14 @@ a {
   left: 10%;
   width: 80%;
   height: 2px;
-  background-color: var(--background-color-hover); /* Couleur soulignée au hover */
+  background-color: var(--background-color-hover);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: var(--background-color-hover);; /* Couleur du texte au hover */
+  color: var(--background-color-hover);
 }
 
 .nav-links a:hover::after {
@@ -260,7 +260,7 @@ a {
     min-height: 100vh; /* Fait en sorte que le conteneur prenne au moins toute la hauteur de la fenêtre visible */
   }
 
-/* Responsive navbar */
+
 @media screen and (max-width: 768px) {
   .navbar {
     flex-wrap: wrap;
@@ -352,6 +352,6 @@ a {
   }
 
   .navbar-center-left {
-    display: none; /* On masque les liens classiques */
+    display: none;
   }
 }

@@ -25,7 +25,7 @@ export class ProductCardComponent implements OnInit{
   }
 
   getStarColor(index: number): string {
-    const level = Math.floor(this.likeCount / 25); // 0–4
+    const level = Math.floor(this.likeCount / 25);
     return index < level ? 'gold' : 'lightgray';
   }
 
@@ -38,8 +38,8 @@ export class ProductCardComponent implements OnInit{
   }
 
   onLoveClick(event: Event): void {
-    event.stopPropagation(); // empêche la propagation du clic si l’élément est dans un <a>
-    event.preventDefault();  // Empêche le lien de s’activer
+    event.stopPropagation();
+    event.preventDefault(); 
     if (!this.liked) {
       this.likeCount++;
       this.liked = true;
@@ -51,7 +51,7 @@ export class ProductCardComponent implements OnInit{
 
   onAddToCart(event: MouseEvent): void {
     console.log('Ajout dans le panier');
-    event.stopPropagation();     // Empêche la propagation du clic
-    event.preventDefault();      // Empêche le lien de s’activer
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

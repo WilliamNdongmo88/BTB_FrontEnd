@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit  {
 
     handleCredentialResponse(response: any) {
       this.loading = true;
-      this.cd.detectChanges(); // ✅ Force Angular à mettre à jour l’UI
+      this.cd.detectChanges(); //Force Angular à mettre à jour l’UI
 
       const googleIdToken = response.credential;
 
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit  {
         },
         complete: () => {
           this.loading = false;
-          this.cd.detectChanges(); // ✅ Met à jour l’UI quand c’est fini
+          this.cd.detectChanges(); // MAJ l’UI quand c’est fini
         }
       });
     }

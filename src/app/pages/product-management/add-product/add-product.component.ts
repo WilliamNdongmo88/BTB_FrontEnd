@@ -20,7 +20,6 @@ export class AddProductComponent implements OnInit {
   fileName: string= '';
   convertImageToBase64: string='';
   imageproductGalleryBase64: MyFile[] = []; 
-  // ... (votre code existant pour productSections, currentSection, etc.)
   productSections = [
     { label: 'Basic Information', key: 'basicInformation' },
     { label: 'General Information', key: 'generalInformation' },
@@ -32,11 +31,8 @@ export class AddProductComponent implements OnInit {
 
   basicInformationForm!: FormGroup;
 
-  // --- NOUVEAU : Variables pour stocker les images encodées en Base64 ---
-  productImageBase64: string | null = null; // Pour l'image principale (Data URL Base64)
-  productGalleryBase64: string[] = [];      // Pour la galerie (tableau de Data URL Base64)
-  // Les prévisualisations utilisent désormais ces mêmes variables.
-  // productGalleryPreviews: (string | ArrayBuffer | null)[] = []; // N'est plus nécessaire comme variable séparée
+  productImageBase64: string | null = null; 
+  productGalleryBase64: string[] = [];   
 
   availableCategories = [
     'Fashion', 'Clothing', 'Style', 'Home Decor', 'Sports'
@@ -49,8 +45,6 @@ export class AddProductComponent implements OnInit {
     const token = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refreshToken');
     if (token==null && refreshToken==null) {
-      // localStorage.removeItem('token');
-      // localStorage.removeItem('refreshToken');
       this.router.navigate(['login']);
     }
     this.initForms();
@@ -63,9 +57,6 @@ export class AddProductComponent implements OnInit {
       price: ['', Validators.required],
       brand: [''],
       category:['', Validators.required],
-      // Note: Les champs d'images ne sont plus directement dans le formulaire
-      // car nous gérons leur conversion et stockage en Base64 séparément.
-      // Le formulaire ne contient que les données textuelles.
     });
   }
 
@@ -86,7 +77,7 @@ export class AddProductComponent implements OnInit {
     return this.selectedCategories.includes(category);
   }
 
-  // --- Mise à jour : Gestion de l'upload d'image principale avec encodage Base64 ---
+  //Image principale 
   onProductImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -104,22 +95,21 @@ export class AddProductComponent implements OnInit {
         this.productImageBase64 = null;
       };
 
-      reader.readAsDataURL(file); // Lit le fichier et l'encode en Base64
+      reader.readAsDataURL(file);
     } else {
       this.productImageBase64 = null;
     }
   }
 
-  // --- Mise à jour : Gestion de la galerie d'images avec encodage Base64 ---
+  // Galerie d'images
   onProductGallerySelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const files = Array.from(input.files); // Convertir FileList en Array
+      const files = Array.from(input.files);
 
       files.forEach((file) => {
         const reader = new FileReader();
         reader.onload = () => {
-          // Ajoute chaque fichier encodé en Base64 au 
           this.productGalleryBase64.push(reader.result as string);
           const myFile: MyFile = {
             name: file.name,
@@ -131,7 +121,7 @@ export class AddProductComponent implements OnInit {
         reader.onerror = (error) => {
           console.error('Erreur de lecture du fichier de galerie:', error);
         };
-        reader.readAsDataURL(file); // Lit le fichier et l'encode en Base64
+        reader.readAsDataURL(file);
       });
     }
   }
@@ -154,7 +144,6 @@ export class AddProductComponent implements OnInit {
         return;
     }
 
-    // Vérifiez si une image principale est requise et manquante
     if (!this.convertImageToBase64) {
       alert('Veuillez ajouter une image principale pour le produit.');
       return;
@@ -173,14 +162,13 @@ export class AddProductComponent implements OnInit {
       price: productData.price,
       //category: this.selectedCategories,
       productImage: myFile,    
-      images: this.imageproductGalleryBase64, // <-- ENVOIE LA GALERIE EN BASE64
+      images: this.imageproductGalleryBase64,
     };
     console.log('ProductData a publier :', productData);
     this.loading = true;
     this.productService.addProduct(productToSend).subscribe({
       next: (responseProduct) => {
         console.log("Produit publié avec succès :", responseProduct);
-        // Réinitialiser le formulaire et les données d'images
         this.basicInformationForm.reset();
         this.selectedCategories = [];
         this.productImageBase64 = null; // Réinitialise l'image principale

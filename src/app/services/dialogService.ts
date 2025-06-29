@@ -10,20 +10,12 @@ import { ConfirmationDialogComponent } from "../dialog/dialogComponent/confirmat
 export class DialogService {
   private dialogHost: ViewContainerRef | null = null;
   private currentDialogRef: ComponentRef<any> | null = null;
-  private readonly environmentInjector = inject(EnvironmentInjector); // Pour Angular 14+
+  private readonly environmentInjector = inject(EnvironmentInjector); 
 
   setDialogHost(vcr: ViewContainerRef): void {
     this.dialogHost = vcr;
   }
 
-  /**
-   * Ouvre un dialogue de confirmation et retourne un Observable pour le résultat.
-   * @param title Titre de la boîte de dialogue.
-   * @param message Message de la boîte de dialogue.
-   * @param confirmButtonText Texte du bouton de confirmation.
-   * @param cancelButtonText Texte du bouton d'annulation.
-   * @returns Observable qui émet `true` pour confirmer, `false` pour annuler.
-   */
   openConfirmationDialog(
     title: string,
     message: string,
@@ -35,17 +27,15 @@ export class DialogService {
       return new Observable(observer => observer.error('Dialog host not set.'));
     }
 
-    // Supprimer l'ancien dialogue s'il existe
     this.closeDialog();
 
-    // Créer le composant de dialogue dynamiquement
+    // Création du composant de dialogue dynamiquement
     this.currentDialogRef = this.dialogHost.createComponent(ConfirmationDialogComponent, {
-      environmentInjector: this.environmentInjector // Nécessaire pour les composants standalone
+      environmentInjector: this.environmentInjector
     });
 
     const dialogComponent = this.currentDialogRef.instance;
 
-    // Passer les inputs au composant de dialogue
     dialogComponent.title = title;
     dialogComponent.message = message;
     dialogComponent.confirmButtonText = confirmButtonText;
@@ -53,19 +43,15 @@ export class DialogService {
 
     const resultSubject = new Subject<boolean>();
 
-    // S'abonner à l'événement 'confirmed' du composant de dialogue
     dialogComponent.confirmed.subscribe((result: boolean) => {
-      resultSubject.next(result); // Émettre le résultat
-      this.closeDialog();       // Fermer le dialogue après la réponse
-      resultSubject.complete(); // Compléter l'Observable
+      resultSubject.next(result); 
+      this.closeDialog();      
+      resultSubject.complete(); 
     });
 
     return resultSubject.asObservable();
   }
 
-  /**
-   * Ferme le dialogue actuellement ouvert.
-   */
   closeDialog(): void {
     if (this.currentDialogRef) {
       this.currentDialogRef.destroy();

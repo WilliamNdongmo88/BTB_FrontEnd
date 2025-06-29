@@ -43,14 +43,13 @@ export const routes: Routes = [
     { path: 'admin', component: DashboardComponent },
     {
     path: 'admin',
-    component: MainLayoutComponent, // <-- C'est ici que MainLayoutComponent est le parent
+    component: MainLayoutComponent,
     children: [
-      //{ path: 'admin', redirectTo: 'products/add', pathMatch: 'full' }, // Redirige la racine vers la page d'ajout
+      //{ path: 'admin', redirectTo: 'products/add', pathMatch: 'full' },
       { path: 'products/add', component: AddProductComponent },
-      { path: 'products', component: ProductsComponent }, // Page liste des produits dans le dashboard
+      { path: 'products', component: ProductsComponent }, 
       { path: 'products/edit/:id', component: EditProductComponent },
 
-      // Ajoutez des routes pour les autres sections
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'categories', component: CategoriesComponent },
       { path: 'orders', component: OrdersComponent },

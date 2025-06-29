@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
     this.showDropdown = !this.showDropdown;
   }
 
-  // Écouteur d'événement pour fermer la picklist si l'on clique n'importe où sur le document
+  // Ecouteur d'événement pour fermer la picklist si l'on clique n'importe où sur le document
   @HostListener('document:click', ['$event'])
   onClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;

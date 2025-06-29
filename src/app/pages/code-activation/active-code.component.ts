@@ -48,7 +48,7 @@ export class ActiveCodeComponent{
         console.log('----active()----');
         this.submitted=true;
         if (this.activeForm.invalid) {
-            return; // Stoppe la soumission si le champ est invalide
+            return; 
         }
 
         this.loading = true;

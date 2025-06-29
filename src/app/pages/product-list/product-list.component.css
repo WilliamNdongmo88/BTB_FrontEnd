@@ -8,7 +8,7 @@
 
 a {
   text-decoration: none;
-  color: inherit; /* Optionnel, pour hériter la couleur du parent */
+  color: inherit; 
 }
 
 .text-center{
@@ -24,10 +24,8 @@ a {
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* background-color: rgba(255, 255, 255, 0.5); /* transparent blanc*/ 
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  /* backdrop-filter: blur(1px); */
 }

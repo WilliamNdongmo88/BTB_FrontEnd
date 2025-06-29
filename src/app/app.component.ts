@@ -78,7 +78,7 @@ export class AppComponent implements OnInit{
     }
 
     logout() {
-      this.loading = true; // Active le spinner
+      this.loading = true; 
       this.authService.logout().subscribe({
               next: isUserGoogle => {
                 localStorage.removeItem('token');

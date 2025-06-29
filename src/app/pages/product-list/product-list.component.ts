@@ -32,7 +32,6 @@ export class ProductListComponent implements OnInit{
     if (token) {
       this.loadProducts();
     } else {
-      // Retente après un petit délai
       setTimeout(() => this.loadProducts(), 50);
     }
   }

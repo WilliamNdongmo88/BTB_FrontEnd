@@ -1,4 +1,3 @@
-/* src/app/pages/products/products.component.scss */
 .products-page {
   padding: 20px;
   background-color: #f8f9fa;
@@ -17,7 +16,7 @@
 
     .header-actions {
       display: flex;
-      gap: 10px; /* Espacement entre les boutons d'en-tête */
+      gap: 10px;
     }
 
     .btn.primary {
@@ -69,7 +68,6 @@
     }
   }
 
-  // Styles pour le tableau des produits
   .products-table-container {
     background-color: #fff;
     border-radius: 10px;
@@ -113,10 +111,9 @@
       }
     }
 
-    /* Colonne Checkbox */
     th.checkbox-header, td:first-child {
-      width: 50px; /* Largeur fixe pour la colonne checkbox */
-      text-align: center; /* Centre la checkbox */
+      width: 50px; 
+      text-align: center; 
     }
 
     th.checkbox-header input{
@@ -183,13 +180,12 @@
     }
   }
 
-  // Styles de pagination
   .pagination-controls {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px 0;
-    margin-top: 20px; /* Espace au-dessus de la pagination */
+    margin-top: 20px; 
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -248,11 +244,11 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.5); /* transparent blanc */
+    background-color: rgba(255, 255, 255, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(1px); /* Optionnel pour un effet flou */
+    backdrop-filter: blur(1px); 
   }
 }

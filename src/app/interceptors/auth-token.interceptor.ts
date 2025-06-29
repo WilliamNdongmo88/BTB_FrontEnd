@@ -6,7 +6,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   console.log('isLoginRequest : ', isLoginRequest);
   console.log('[Interceptor] Token actuel dans localStorage <<-- Important:', token);
 
-  // Ne pas ajouter d'en-tête Authorization pour la requête de connexion
+  // N'ajoute pas d'en-tête Authorization pour la requête de connexion
   if (token && !isLoginRequest) {
     console.log('authTokenInterceptor token :', token);
     const authReq = req.clone({

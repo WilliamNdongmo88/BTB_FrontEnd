@@ -184,16 +184,13 @@ export class AuthService {
 		this.isUserGoogle = true;
 		return this.http.post(this.apiUrl+'auth/google', { idToken: googleIdToken }).pipe(
         tap((res) =>{
-			// data du backend
 				const authData = res as any;
 				console.log('[Login] data du backend :', authData);
-				
-				// Stocke le token
+
 				localStorage.setItem('token', authData.token);
 				localStorage.setItem('refreshToken', authData.refresh);
 				console.log('[Login] Token stocké:', authData.token);
 
-				// Définis l'utilisateur
 				const userObj = {
 				name: authData.user.name,
 				email: authData.user.email,
@@ -207,7 +204,7 @@ export class AuthService {
 		catchError((error) => {
 			console.error('Erreur d\'authentification :', error);
 			this.user.set(null);
-			return of(null); // ou of(false), selon la gestion côté appelant
+			return of(null);
 		})
       );      
     }

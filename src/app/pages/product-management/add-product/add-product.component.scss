@@ -9,12 +9,12 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.5); /* transparent blanc */
+    background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(1px); /* Optionnel pour un effet flou */
+    backdrop-filter: blur(1px);
   }
   
   .page-header {
@@ -383,7 +383,7 @@
 
         .image-resolution-hint {
             font-size: 0.8em;
-            color: #dc3545; /* Rouge pour l'alerte */
+            color: #dc3545;
             margin-top: 10px;
         }
       }

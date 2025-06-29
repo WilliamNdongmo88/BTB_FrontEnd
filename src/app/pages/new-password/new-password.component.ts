@@ -83,7 +83,7 @@ export class NewPasswordComponent{
         this.isDisabled=true;
         if (this.isError) this.isError=false;
         if (this.confirm_mailForm.invalid) {
-            return; // Stoppe la soumission si le champ est invalide
+            return;
         }
         this.loading = true;
         this.activeSubscripton = this.authService.confirm_mail( this.confirm_mailForm.value as NewActiveCodeCredentials ).subscribe({

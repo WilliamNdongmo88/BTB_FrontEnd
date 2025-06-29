@@ -20,10 +20,9 @@ export class EditProductComponent implements OnInit {
   fileName: string= '';
   convertImageToBase64: string='';
   imageproductGalleryBase64: MyFile[] = []; 
-  productId: number | null = null; // Pour stocker l'ID du produit à modifier
-  product: Product | null = null; // Pour stocker les données du produit existant
+  productId: number | null = null;
+  product: Product | null = null; 
 
-  // Les sections du formulaire (identiques à AddProductComponent)
   productSections = [
     { label: 'Basic Information', key: 'basicInformation' },
     { label: 'General Information', key: 'generalInformation' },
@@ -42,7 +41,7 @@ export class EditProductComponent implements OnInit {
     'Fashion', 'Textile', 'Clothing', 'Digital Product', 'Style',
     'Electronics', 'Home Decor', 'Books', 'Sports'
   ];
-  selectedCategories: string[] = []; // Pour les catégories si vous les incluez
+  selectedCategories: string[] = []; 
 
   isLoading: boolean = true;
   error: string | null = null;
@@ -50,13 +49,13 @@ export class EditProductComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private route: ActivatedRoute, // Pour accéder aux paramètres de l'URL
-    private router: Router // Pour la redirection après modification
+    private route: ActivatedRoute, 
+    private router: Router 
   ) {}
 
   ngOnInit(): void {
     this.initForms();
-    // Récupérer l'ID du produit depuis l'URL
+    // Récupéreration de l'ID du produit depuis l'URL
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -75,12 +74,11 @@ export class EditProductComponent implements OnInit {
     this.basicInformationForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.maxLength(1000)],
-      price: [0, [Validators.required, Validators.min(0)]], // Ajout du champ prix
-      brand: [''], // Si vous avez le champ brand dans votre modèle
+      price: [0, [Validators.required, Validators.min(0)]],
+      brand: [''], 
     });
   }
 
-  // Charge les détails du produit existant
   loadProductDetails(id: number): void {
     this.isLoading = true;
     this.prodId = id;
@@ -93,7 +91,7 @@ export class EditProductComponent implements OnInit {
           name: product.name,
           description: product.description,
           price: product.price,
-          // brand: product.brand, // Si vous avez le champ brand
+          // brand: product.brand,
         });
 
         // Pré-remplir les images Base64
@@ -103,7 +101,7 @@ export class EditProductComponent implements OnInit {
         if (product.images) {
           this.productGalleryBase64 = product.images.map(img => img.content);
         }
-        // Pré-remplir les catégories si elles sont présentes
+        // Pré-remplir les catégories
         // if (product.category) {
         //   this.selectedCategories = [...product.category];
         // }
@@ -223,7 +221,7 @@ export class EditProductComponent implements OnInit {
         console.log('Produit mis à jour avec succès :', response);
         alert('Produit mis à jour avec succès !');
         this.isLoading = false;
-        this.router.navigate(['/admin/products']); // Rediriger vers la liste des produits
+        this.router.navigate(['/admin/products']);
       },
       error: (error) => {
         console.error('Échec de la mise à jour du produit :', error.message);

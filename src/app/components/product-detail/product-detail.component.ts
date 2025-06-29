@@ -117,6 +117,6 @@ export class ProductDetailComponent {
   }
 
     goBack(): void {
-      this.router.navigate(['/page-products']); // ou vers une autre route selon ta structure
+      this.router.navigate(['/page-products']);
     }
 }

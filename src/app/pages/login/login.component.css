@@ -224,10 +224,6 @@ input:focus {
   backdrop-filter: blur(1px);
 }
 
-/* ============================= */
-/* RESPONSIVE : LOGIN PAGE      */
-/* ============================= */
-
 @media (max-width: 1024px) {
   .login-container {
     padding: 30px;
