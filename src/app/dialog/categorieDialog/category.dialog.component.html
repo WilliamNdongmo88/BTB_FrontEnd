@@ -1,0 +1,21 @@
+<div class="modal-overlay">
+  <div *ngIf="loading" class="custom-spinner spinner-overlay">
+      <mat-spinner diameter="50" color="warn"></mat-spinner>
+  </div>
+  <div class="modal">
+    <h3>Nouvelle catégorie</h3>
+
+    <input
+      type="text"
+      [(ngModel)]="newCategoryTitle"
+      placeholder="Nom de la catégorie"
+      class="input"
+    />
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="createNewCategory()">Créer</button>
+      <button class="btn btn-secondary" (click)="cancel()">Annuler</button>
+    </div>
+  </div>
+</div>
+

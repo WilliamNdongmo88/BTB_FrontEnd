@@ -15,7 +15,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
         'Content-Type': 'application/json'
       }
     });
-    console.log('✅ Intercepteur appliqué à :', authReq.url);
+    console.log('Intercepteur appliqué à :', authReq.url);
     console.log('[Interceptor] Token ajouté:', token);
     return next(authReq);
   }

@@ -1,19 +1,17 @@
 .add-product-page {
+  position: relative;
   .custom-spinner circle {
     stroke: #1d1e1e; 
   }
 
   .spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    position: absolute;
+    inset: 0;
     background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100;
     backdrop-filter: blur(1px);
   }
   
@@ -164,7 +162,7 @@
             font-size: 13px;
           }
 
-          input[type='text'],
+          input[type='text'],select,
           textarea {
             width: 80%;
             padding: 5px;
@@ -183,6 +181,16 @@
             gap: 127px;
             .max-width-prod{
               width: 70%;
+            }
+          }
+
+          .label-select-cat{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 97px;
+            margin-bottom: 20px;
+            .max-width-prod{
+              width: 72%;
             }
           }
 
@@ -227,6 +235,39 @@
             padding: 0;
           }
         }
+
+        .form-groups {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 1.5rem;
+          gap: 11%;
+
+          label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.95rem;
+          }
+
+          select.form-control {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+            &:focus {
+              border-color: #6897b1; // couleur personnalisée
+              box-shadow: 0 0 0 2px rgba(104, 151, 177, 0.2);
+              outline: none;
+            }
+
+            option {
+              padding: 8px;
+            }
+          }
+        }
+
 
         .category-tags {
           display: flex;

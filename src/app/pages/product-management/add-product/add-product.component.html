@@ -79,9 +79,21 @@
             <div class="label-input-cat">
             <label>Category</label>
             <div class="max-width-cat">
-              <input id="category" type="text" formControlName="category" />
+              <select
+                id="category"
+                class="form-control"
+                [(ngModel)]="selectedCategory"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="onCategoryChange($event)">
+                
+                <option value="" disabled>-- Choisir une catégorie --</option>
+                <option *ngFor="let category of categories" [value]="category.id">
+                  {{ category.title }}
+                </option>
+                <option value="__new__">+ Créer une nouvelle catégorie</option>
+              </select>
               <div class="category-tags">
-                <span *ngFor="let cat of availableCategories"
+                <span *ngFor="let cat of availableSubCategories"
                       class="tag"
                       [class.selected]="isCategorySelected(cat)"
                       (click)="toggleCategory(cat)">

@@ -1,5 +1,6 @@
 import { InterfaceProduct } from "../interface/product.interface";
 import { MyFile } from "./myfile.model";
+import { User } from "./user.model";
 
 export class Product implements InterfaceProduct{
   id: number = -1;

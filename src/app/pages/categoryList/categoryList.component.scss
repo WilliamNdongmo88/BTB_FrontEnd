@@ -1,23 +1,17 @@
-.products-page {
+.subCategory-page {
   padding: 20px;
-  position: relative;
   background-color: #f8f9fa;
+  position: relative;
 
   .page-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
     margin-bottom: 25px;
 
-    h1 {
-      font-size: 2em;
-      color: #333;
-      margin: 0;
-    }
-
     .header-actions {
       display: flex;
-      gap: 10px;
+      gap: 100px;
     }
 
     .btn.primary {
@@ -40,7 +34,7 @@
     }
   }
 
-  .loading-message, .error-message, .no-products-message {
+  .loading-message, .error-message, .no-subCategory-message {
     text-align: center;
     padding: 30px;
     background-color: #fff;
@@ -69,7 +63,7 @@
     }
   }
 
-  .products-table-container {
+  .subCategory-table-container {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -77,7 +71,7 @@
     margin-top: 20px;
   }
 
-  .products-table {
+  .subCategory-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
@@ -239,14 +233,16 @@
     }
   }
 
+
   .spinner-overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(255, 255, 255, 0.5); 
+    background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
-    backdrop-filter: blur(1px); 
+    backdrop-filter: blur(1px);
   }
+
 }

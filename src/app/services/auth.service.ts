@@ -192,10 +192,11 @@ export class AuthService {
 				console.log('[Login] Token stocké:', authData.token);
 
 				const userObj = {
-				name: authData.user.name,
-				email: authData.user.email,
-				actif: authData.user.actif,
-				role: authData.user.role.libelle,
+					id:authData.user.id,
+					name: authData.user.name,
+					email: authData.user.email,
+					actif: authData.user.actif,
+					role: authData.user.role.libelle,
 				};
 				this.user.set(userObj);
 			},
@@ -223,6 +224,7 @@ export class AuthService {
         const payload = JSON.parse(atob(token.split('.')[1]));
 		console.log('[AuthService] payload '+  JSON.stringify(payload));
 		  const newLocal = {
+			  id:payload.id,
 			  name: payload.nom,
 			  email: payload.sub,
 			  actif: true,

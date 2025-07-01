@@ -1,16 +1,21 @@
 // src/app/pages/product-management/add-product/add-product.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { MyFile } from '../../../models/myfile.model';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { CategoryDialogComponent } from '../../../dialog/categorieDialog/category.dialog.component';
+import { CategoryService } from '../../../services/category.service';
+import { Category, SubCategory } from '../../../models/subCategory.models';
+
 
 @Component({
   selector: 'app-add-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, FormsModule],
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss']
 })
@@ -20,6 +25,15 @@ export class AddProductComponent implements OnInit {
   fileName: string= '';
   convertImageToBase64: string='';
   imageproductGalleryBase64: MyFile[] = []; 
+  selectedCategory: number | null = null;
+  categories: Category[] = [];
+  subCategories: SubCategory[] = [];
+  categoryId!: number;
+
+  availableSubCategories: string[] = [];       // pour afficher les options
+  selectedSubCategories: string[] = [];        // pour suivre ce que l'utilisateur a coché
+
+
   productSections = [
     { label: 'Basic Information', key: 'basicInformation' },
     { label: 'General Information', key: 'generalInformation' },
@@ -33,13 +47,14 @@ export class AddProductComponent implements OnInit {
 
   productImageBase64: string | null = null; 
   productGalleryBase64: string[] = [];   
-
-  availableCategories = [
-    'Fashion', 'Clothing', 'Style', 'Home Decor', 'Sports'
-  ];
   selectedCategories: string[] = [];
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {}
+  constructor(private fb: FormBuilder, 
+              private productService: ProductService, 
+              private router: Router, 
+              private dialog: MatDialog,
+              private categoryService: CategoryService
+            ) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -48,6 +63,7 @@ export class AddProductComponent implements OnInit {
       this.router.navigate(['login']);
     }
     this.initForms();
+    this.getAllCategories();
   }
 
   private initForms(): void {
@@ -60,22 +76,102 @@ export class AddProductComponent implements OnInit {
     });
   }
 
+    getAllCategories(){
+      this.categoryService.getAllCategories().subscribe({
+        next: (data) => {
+          this.categories = data;
+          console.log('[AddProductComponent] this.categories ::: ', this.categories );
+          if (this.categories.length > 0) {
+            this.selectedCategory = this.categories[0].id;
+            this.categoryId = this.categories[0].id;
+            this.getAllSubCategories(this.categoryId)
+          }
+          //console.log('[CategoriesComponent] this.categories : ', this.categories authService);
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des catégories :', err);
+        }
+      });
+      return this.categoryId;
+    }
+
+    getAllSubCategories(value:any){
+      this.categoryService.getAllSubCategoryRelatedToCaegory(value).subscribe({
+        next: (data) => {
+          this.subCategories = data;
+          this.availableSubCategories = this.subCategories.map((s) => s.title);
+          console.log('[AddProductComponent] this.subCategories ::: ', this.subCategories );
+          //console.log('[subCategoriesComponent] this.subCategories : ', this.subCategories authService);
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des catégories :', err);
+        }
+      });
+    }
+
   selectSection(key: string): void {
     this.currentSection = key;
   }
 
-  toggleCategory(category: string): void {
-    const index = this.selectedCategories.indexOf(category);
+  toggleCategory(subcategory: string): void {
+    const index = this.selectedSubCategories.indexOf(subcategory);
+    //console.log('[CategoriesComponent] index:', index);
     if (index > -1) {
-      this.selectedCategories.splice(index, 1);
+      this.selectedSubCategories.splice(index, 1); // retiré de la sélection
+      //console.log('[CategoriesComponent] on le retire de la sélection:', this.selectedSubCategories);
     } else {
-      this.selectedCategories.push(category);
+      this.selectedSubCategories.push(subcategory); // ajouté à la sélection
+      //console.log('[CategoriesComponent] on l’ajoute à la sélection:', this.selectedSubCategories);
     }
   }
 
-  isCategorySelected(category: string): boolean {
-    return this.selectedCategories.includes(category);
+  isCategorySelected(subcategory: string): boolean {
+    return this.selectedSubCategories.includes(subcategory);
   }
+
+
+    onCategoryChange(event: any) {
+      const value = event.target.value;
+      this.getAllSubCategories(value);
+      console.log('[CategoriesComponent] value:', value);
+      for (let i = 0; i < this.categories.length; i++) {
+        const element = this.categories[i];
+        if (element.id==value) {
+          console.log('[CategoriesComponent] element:', element.title);
+          this.categoryId = element.id
+        }
+      }
+      if (value === '__new__') {
+        this.openDialog();
+        // Vide la sélection
+        setTimeout(() => {
+          this.selectedCategory = null;
+        });
+      } else {
+        this.selectedCategory = +value;
+        console.log('[CategoriesComponent] this.selectedCategory ::', this.selectedCategory);
+      }
+    }
+
+    openDialog(): void {
+      const dialogRef = this.dialog.open(CategoryDialogComponent, {
+        width: '400px'
+      });
+
+      dialogRef.afterClosed().subscribe((result: {id: number, title: string, slug: string }) => {
+        if (result) {
+          console.log('[CategoriesComponent] results :', result); 
+          this.categories.push({
+            id: this.categories.length + 1,
+            title: result.title,
+            slug: result.slug
+          });
+          let index = this.categories.length;
+          this.selectedCategory = this.categories[index-1].id;
+          this.categoryId = result.id;
+        }
+      });
+    }
 
   //Image principale 
   onProductImageSelected(event: Event): void {
@@ -137,6 +233,11 @@ export class AddProductComponent implements OnInit {
   }
 
   publishProduct(): void {
+    if (!this.selectedCategory) {
+      alert('Veuillez sélectionner une catégorie.');
+      return;
+    }
+
     if (this.basicInformationForm.invalid ) {// || this.selectedCategories.length === 0
         console.warn('Le formulaire d\'informations de base est invalide ou les catégories ne sont pas sélectionnées.');
         this.basicInformationForm.markAllAsTouched();
@@ -161,6 +262,7 @@ export class AddProductComponent implements OnInit {
       description: productData.description,
       price: productData.price,
       //category: this.selectedCategories,
+      subCategories: this.selectedSubCategories,
       productImage: myFile,    
       images: this.imageproductGalleryBase64,
     };

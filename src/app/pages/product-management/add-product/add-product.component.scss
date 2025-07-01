@@ -156,19 +156,28 @@
 
           label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            margin-top: 10px;
             font-weight: 600;
             color: #333;
             font-size: 13px;
           }
 
-          // .input-width{
-          //   width: 100%;
-          // }
-
           input[type='text'],
           textarea {
             width: 80%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            &:focus {
+              border-color: #007bff;
+              box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+          }
+
+          select{
+            width: 82%;
             padding: 5px;
             border: 1px solid #ddd;
             border-radius: 6px;

@@ -1,0 +1,85 @@
+<div class="subCategory-page">
+  <div class="page-header">
+    <div class="header-actions">
+      <button
+        class="btn btn-delete"
+        [disabled]="numberOfSelectedGategories === 0"
+        (click)="deleteSelectedProducts()"
+        *ngIf="numberOfSelectedGategories > 0"
+      >
+        Delete ({{ numberOfSelectedGategories }}) Selected
+      </button>
+      <button class="btn primary" (click)="refreshSubCategories()">Refresh Categories</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="custom-spinner spinner-overlay">
+      <mat-spinner diameter="50" color="warn"></mat-spinner>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button class="btn secondary" (click)="refreshSubCategories()">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error && subCategories.length === 0" class="no-subCategory-message">
+    <p>No Sub Categories found. Start by adding new sub Category!</p>
+  </div>
+
+  <div *ngIf="!isLoading && !error && subCategories.length > 0" class="subCategory-table-container">
+    <table class="subCategory-table">
+      <thead>
+        <tr>
+          <th class="checkbox-header">
+            <input
+              type="checkbox"
+              [(ngModel)]="selectAll"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+          <th>Catégories</th>
+          <th>Sous Catégories</th>
+          <th>Types</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subCategory of paginatedsubCategories">
+          <td>
+            <input
+              type="checkbox"
+              [checked]="isSubCategoryIdSelected(subCategory.id)"
+              (change)="toggleSubCategorySelection(subCategory.id)"
+            />
+          </td>
+          <td>{{ subCategory.category.title }}</td>
+          <td class="subCategory-description-cell">{{ subCategory.title }}</td>
+          <td>{{ subCategory.type }}</td>
+          <td class="actions-cell">
+            <!-- <button class="btn btn-edit" (click)="editSubCategory(subCategory.id)">Edit</button> -->
+            <button class="btn btn-delete" (click)="deleteSubCategory(subCategory.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination-controls" *ngIf="totalPages > 1">
+      <button class="btn btn-pagination" (click)="previousPage()" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span class="page-numbers">
+        <button
+          *ngFor="let page of pagesArray"
+          class="btn btn-pagination-number"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </span>
+      <button class="btn btn-pagination" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </div>
+</div>

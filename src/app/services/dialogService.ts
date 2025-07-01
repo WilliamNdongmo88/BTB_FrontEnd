@@ -1,6 +1,6 @@
 import { ComponentRef, EnvironmentInjector, inject, Injectable, ViewContainerRef } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { ConfirmationDialogComponent } from "../dialog/dialogComponent/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "../dialog/confirmationDialog/confirmation-dialog.component";
 
 
 
